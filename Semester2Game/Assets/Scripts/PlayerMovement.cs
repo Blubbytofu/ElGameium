@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ExtensionMethods;
 
 namespace PlayerObject
 {
@@ -10,6 +11,7 @@ namespace PlayerObject
         [SerializeField] private Rigidbody playerRb;
         [SerializeField] private CapsuleCollider playerCollider;
         [SerializeField] private Transform orientation;
+        [SerializeField] private PlayerCamera playerCameraScript;
 
         [Header("Grounded")]
         [SerializeField] private float maxGroundedVel;
@@ -21,18 +23,20 @@ namespace PlayerObject
         [SerializeField] private float airSpeed;
         [SerializeField] private float airDrag;
         [SerializeField] private float backwardAirSpeed;
+        [SerializeField] private float bHopMultiplier;
+        private bool bHopping;
 
         [Header("Environment Detection")]
-        private RaycastHit groundHit;
         [SerializeField] private float groundHitLength;
+        private RaycastHit groundHit;
         public bool isGrounded { get; private set; }
 
         private int vInput;
         private int hInput;
 
         [Header("Jumping")]
-        private bool jumpInput;
         [SerializeField] private float jumpForce;
+        private bool jumpInput;
 
         void Start()
         {
@@ -62,13 +66,9 @@ namespace PlayerObject
 
         void GetInput()
         {
-            if ((Input.GetKey(KeyCode.Space) || Input.GetKeyDown(KeyCode.Space)) && isGrounded && !jumpInput)
+            if ( Input.GetKeyDown(KeyCode.Space) && isGrounded && !jumpInput)
             {
                 jumpInput = true;
-            }
-            else
-            {
-                jumpInput = false;
             }
 
             if (Input.GetKey(KeyCode.W))
@@ -103,21 +103,48 @@ namespace PlayerObject
             playerRb.useGravity = true;
             playerRb.drag = airDrag;
 
-            Vector3 moveD = vInput * orientation.transform.forward + hInput * orientation.transform.right;
-            moveD.Normalize();
-
-            float sideSpeed = Mathf.Sqrt(playerRb.velocity.x * playerRb.velocity.x + playerRb.velocity.z * playerRb.velocity.z);
-
-            if (sideSpeed < maxAirVel)
+            if ((playerCameraScript.mouseX > 0 && hInput > 0 && vInput == 0)
+            || (playerCameraScript.mouseX < 0 && hInput < 0 && vInput == 0))
             {
-                playerRb.AddForce(airSpeed * moveD, ForceMode.VelocityChange);
+                //bHopping = true;
             }
             else
             {
-                playerRb.AddForce(backwardAirSpeed * -moveD, ForceMode.Impulse);
+                //bHopping = false;
             }
 
-            Debug.Log(sideSpeed);
+            float sideSpeed = Mathf.Sqrt(playerRb.velocity.x * playerRb.velocity.x + playerRb.velocity.z * playerRb.velocity.z);
+
+            if (bHopping)
+            {
+                Vector3 moveD = orientation.forward + hInput * orientation.right;
+                moveD.Normalize();
+
+                if (sideSpeed < maxAirVel * bHopMultiplier)
+                {
+                    playerRb.AddForce(airSpeed * moveD, ForceMode.VelocityChange);
+                }
+                else
+                {
+                    playerRb.AddForce(backwardAirSpeed * -moveD, ForceMode.Impulse);
+                }
+            }
+            else
+            {
+                Vector3 moveD = vInput * orientation.forward + hInput * orientation.right;
+                moveD.Normalize();
+
+                if (sideSpeed < maxAirVel)
+                {
+                    playerRb.AddForce(airSpeed * moveD, ForceMode.VelocityChange);
+                }
+                else
+                {
+                    playerRb.AddForce(backwardAirSpeed * -moveD, ForceMode.Impulse);
+                }
+            }
+
+            //Debug.Log(sideSpeed);
         }
 
         private void MoveGround()
@@ -132,7 +159,7 @@ namespace PlayerObject
                 playerRb.drag = groundDrag;
             }
 
-            Vector3 moveD = vInput * orientation.transform.forward + hInput * orientation.transform.right;
+            Vector3 moveD = vInput * orientation.forward + hInput * orientation.right;
             moveD = Vector3.ProjectOnPlane(moveD, groundHit.normal);
             moveD.Normalize();
 
@@ -141,7 +168,7 @@ namespace PlayerObject
                 playerRb.velocity += (maxGroundedVel - playerRb.velocity.magnitude) * moveD;
             }
 
-            Debug.Log(playerRb.velocity.magnitude);
+            //Debug.Log(playerRb.velocity.magnitude);
         }
 
         private void Jumping()
@@ -149,8 +176,8 @@ namespace PlayerObject
             if (jumpInput)
             {
                 jumpInput = false;
-                playerRb.velocity = new Vector3(playerRb.velocity.x, 0, playerRb.velocity.z);
-                playerRb.AddForce(jumpForce * orientation.transform.up, ForceMode.Impulse);
+                playerRb.velocity.ReplaceField(newY: 0);
+                playerRb.AddForce(jumpForce * orientation.up, ForceMode.Impulse);
             }
         }
 

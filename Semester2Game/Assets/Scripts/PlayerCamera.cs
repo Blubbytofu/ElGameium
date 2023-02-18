@@ -10,8 +10,9 @@ namespace PlayerObject
         [SerializeField] private Transform orientation;
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform playerCamera;
+        [SerializeField] private PlayerMovement playerMovementScript;
 
-        private float mouseX;
+        public float mouseX { get; private set; }
         private float mouseY;
         private float xRotation;
         private float yRotation;
@@ -44,7 +45,7 @@ namespace PlayerObject
             xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
             playerCamera.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-            orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
+            orientation.rotation = Quaternion.Euler(0, yRotation, 0);
         }
     }
 }

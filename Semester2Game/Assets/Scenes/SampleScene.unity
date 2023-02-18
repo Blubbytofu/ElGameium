@@ -692,6 +692,7 @@ MonoBehaviour:
   orientation: {fileID: 502134001}
   cameraPosition: {fileID: 158171408}
   playerCamera: {fileID: 963194228}
+  playerMovementScript: {fileID: 1066388930}
   xSensitivity: 2
   ySensitivity: 2
 --- !u!114 &1066388930
@@ -709,6 +710,7 @@ MonoBehaviour:
   playerRb: {fileID: 1066388928}
   playerCollider: {fileID: 1066388924}
   orientation: {fileID: 502134001}
+  playerCameraScript: {fileID: 1066388929}
   maxGroundedVel: 12
   groundDrag: 4
   gravityMagnitude: 15
@@ -716,6 +718,7 @@ MonoBehaviour:
   airSpeed: 1
   airDrag: 1
   backwardAirSpeed: 1
+  bHopMultiplier: 2
   groundHitLength: 1
   jumpForce: 600
 --- !u!1 &1281193562
