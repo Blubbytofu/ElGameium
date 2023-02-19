@@ -10,8 +10,15 @@ namespace PlayerObject
         [Header("References")]
         [SerializeField] private Rigidbody playerRb;
         [SerializeField] private CapsuleCollider playerCollider;
+        [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform orientation;
-        [SerializeField] private PlayerCamera playerCameraScript;
+        [SerializeField] private LayerMask environmentMask;
+
+        [Header("Walking")]
+        [SerializeField] private float walkingVelMultiplier;
+        private bool walkingInput;
+        private int vInput;
+        private int hInput;
 
         [Header("Grounded")]
         [SerializeField] private float maxGroundedVel;
@@ -23,29 +30,35 @@ namespace PlayerObject
         [SerializeField] private float airSpeed;
         [SerializeField] private float airDrag;
         [SerializeField] private float backwardAirSpeed;
-        [SerializeField] private float bHopMultiplier;
-        private bool bHopping;
 
         [Header("Environment Detection")]
         [SerializeField] private float groundHitLength;
         private RaycastHit groundHit;
-        public bool isGrounded { get; private set; }
-
-        private int vInput;
-        private int hInput;
+        [SerializeField] private bool isGrounded;
 
         [Header("Jumping")]
         [SerializeField] private float jumpForce;
         private bool jumpInput;
 
+        [Header("Crouching")]
+        [SerializeField] private float crouchHeight;
+        [SerializeField] private float normalHeight;
+        [SerializeField] private float groundedCrouchForce;
+        [SerializeField] private float crouchSpeedMultiplier;
+        [SerializeField] private float crouchLerpSpeed;
+        [SerializeField] private float headClearanceRadius;
+        private bool crouchInput;
+        private bool groundedCrouch;
+
         void Start()
         {
-            Physics.gravity = new Vector3(0, -gravityMagnitude, 0);
+            Physics.gravity = Physics.gravity.ReplaceField(newY: -gravityMagnitude);
         }
 
 
         void Update()
         {
+            groundHitLength = transform.localScale.y + 0.1f;
             isGrounded = Physics.Raycast(orientation.position, -orientation.up, out groundHit, groundHitLength);
 
             GetInput();
@@ -53,6 +66,8 @@ namespace PlayerObject
 
         private void FixedUpdate()
         {
+            Crouching();
+
             if (isGrounded)
             {
                 MoveGround();
@@ -66,9 +81,37 @@ namespace PlayerObject
 
         void GetInput()
         {
-            if ( Input.GetKeyDown(KeyCode.Space) && isGrounded && !jumpInput)
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !jumpInput)
             {
                 jumpInput = true;
+            }
+
+            if (Input.GetKey(KeyCode.LeftShift) && !crouchInput)
+            {
+                walkingInput = true;
+            }
+            else
+            {
+                walkingInput = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                if (Physics.Raycast(orientation.position, -orientation.up, normalHeight))
+                {
+                    groundedCrouch = true;
+                }
+
+                crouchInput = true;
+            }
+
+            if (!Input.GetKey(KeyCode.LeftControl))
+            {
+                if (!Physics.CheckSphere(orientation.position + normalHeight * orientation.up, headClearanceRadius, environmentMask))
+                {
+                    crouchInput = false;
+                    groundedCrouch = false;
+                }
             }
 
             if (Input.GetKey(KeyCode.W))
@@ -103,45 +146,20 @@ namespace PlayerObject
             playerRb.useGravity = true;
             playerRb.drag = airDrag;
 
-            if ((playerCameraScript.mouseX > 0 && hInput > 0 && vInput == 0)
-            || (playerCameraScript.mouseX < 0 && hInput < 0 && vInput == 0))
-            {
-                //bHopping = true;
-            }
-            else
-            {
-                //bHopping = false;
-            }
-
             float sideSpeed = Mathf.Sqrt(playerRb.velocity.x * playerRb.velocity.x + playerRb.velocity.z * playerRb.velocity.z);
 
-            if (bHopping)
-            {
-                Vector3 moveD = orientation.forward + hInput * orientation.right;
-                moveD.Normalize();
+            float maxVel = walkingInput ? maxAirVel * walkingVelMultiplier : (crouchInput ? maxAirVel * crouchSpeedMultiplier : maxAirVel);
 
-                if (sideSpeed < maxAirVel * bHopMultiplier)
-                {
-                    playerRb.AddForce(airSpeed * moveD, ForceMode.VelocityChange);
-                }
-                else
-                {
-                    playerRb.AddForce(backwardAirSpeed * -moveD, ForceMode.Impulse);
-                }
+            Vector3 moveD = vInput * orientation.forward + hInput * orientation.right;
+            moveD.Normalize();
+
+            if (sideSpeed < maxVel)
+            {
+                playerRb.AddForce(airSpeed * moveD, ForceMode.VelocityChange);
             }
             else
             {
-                Vector3 moveD = vInput * orientation.forward + hInput * orientation.right;
-                moveD.Normalize();
-
-                if (sideSpeed < maxAirVel)
-                {
-                    playerRb.AddForce(airSpeed * moveD, ForceMode.VelocityChange);
-                }
-                else
-                {
-                    playerRb.AddForce(backwardAirSpeed * -moveD, ForceMode.Impulse);
-                }
+                playerRb.AddForce(backwardAirSpeed * -moveD, ForceMode.Impulse);
             }
 
             //Debug.Log(sideSpeed);
@@ -150,22 +168,17 @@ namespace PlayerObject
         private void MoveGround()
         {
             playerRb.useGravity = false;
-            if (jumpInput)
-            {
-                playerRb.drag = airDrag;
-            }
-            else
-            {
-                playerRb.drag = groundDrag;
-            }
+            playerRb.drag = groundDrag;
 
             Vector3 moveD = vInput * orientation.forward + hInput * orientation.right;
             moveD = Vector3.ProjectOnPlane(moveD, groundHit.normal);
             moveD.Normalize();
 
-            if (playerRb.velocity.magnitude < maxGroundedVel)
+            float maxVel = walkingInput ? maxGroundedVel * walkingVelMultiplier : (crouchInput ? maxGroundedVel * crouchSpeedMultiplier : maxGroundedVel);
+
+            if (playerRb.velocity.magnitude < maxVel)
             {
-                playerRb.velocity += (maxGroundedVel - playerRb.velocity.magnitude) * moveD;
+                playerRb.velocity += (maxVel - playerRb.velocity.magnitude) * moveD;
             }
 
             //Debug.Log(playerRb.velocity.magnitude);
@@ -176,8 +189,34 @@ namespace PlayerObject
             if (jumpInput)
             {
                 jumpInput = false;
-                playerRb.velocity.ReplaceField(newY: 0);
+                playerRb.velocity = playerRb.velocity.ReplaceField(newY: 0);
+
                 playerRb.AddForce(jumpForce * orientation.up, ForceMode.Impulse);
+            }
+        }
+
+        private void Crouching()
+        {
+            if (crouchInput)
+            {
+                //transform.localScale = transform.localScale.ReplaceField(newY: Mathf.Lerp(transform.localScale.y, crouchHeight, crouchLerpSpeed * Time.deltaTime));
+                playerCollider.height = Mathf.Lerp(playerCollider.height, 1, crouchLerpSpeed * Time.deltaTime);
+                cameraPosition.localPosition = new Vector3(0, 0.22f, 0);
+
+                if (groundedCrouch)
+                {
+                    playerRb.AddForce(groundedCrouchForce * -orientation.up, ForceMode.Impulse);
+                    if (isGrounded)
+                    {
+                        groundedCrouch = false;
+                    }
+                }
+            }
+            else
+            {
+                //transform.localScale = transform.localScale.ReplaceField(newY: normalHeight);
+                playerCollider.height = Mathf.Lerp(playerCollider.height, 2, crouchLerpSpeed * Time.deltaTime);
+                cameraPosition.localPosition = new Vector3(0, 0.67f, 0);
             }
         }
 
@@ -185,6 +224,7 @@ namespace PlayerObject
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(orientation.position, orientation.position - new Vector3(0, groundHitLength, 0));
+            Gizmos.DrawWireSphere(orientation.position + normalHeight * orientation.up, headClearanceRadius);
         }
     }
 }

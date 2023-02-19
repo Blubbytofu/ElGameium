@@ -10,9 +10,8 @@ namespace PlayerObject
         [SerializeField] private Transform orientation;
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform playerCamera;
-        [SerializeField] private PlayerMovement playerMovementScript;
 
-        public float mouseX { get; private set; }
+        private float mouseX;
         private float mouseY;
         private float xRotation;
         private float yRotation;
