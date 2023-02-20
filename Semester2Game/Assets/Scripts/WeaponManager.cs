@@ -33,7 +33,8 @@ namespace PlayerObject
 
         private void Update()
         {
-            if (!weapons[weaponID].GetComponent<Weapon>().isBurstFire || (weapons[weaponID].GetComponent<Weapon>().isBurstFire && weapons[weaponID].GetComponent<Weapon>().currentBurst < 1))
+            Weapon weaponComp = weapons[weaponID].GetComponent<Weapon>();
+            if (!weaponComp.isBurstFire || (weaponComp.isBurstFire && weaponComp.currentBurst < 1))
             {
                 CycleAttack();
                 WeaponNumber();

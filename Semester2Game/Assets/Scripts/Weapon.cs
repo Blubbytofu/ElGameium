@@ -8,14 +8,14 @@ namespace PlayerObject
     {
         [Header("References-----------------------------------------------------------------------------")]
         [SerializeField] private Camera playerCam;
-        //public PlayerCamera playerCamera;
+        [SerializeField] private PlayerCamera playerCamera;
         [SerializeField] private Transform attackPoint;
-        private RaycastHit rayHit;
         [SerializeField] private GameObject muzzleFlash, bulletImpact;
         [SerializeField] private LayerMask environmentMask, enemyMask;
         [SerializeField] private Animator weaponAnimator;
         //public PlayerInventory playerInventory;
         [SerializeField] private WeaponManager weaponManager;
+        private RaycastHit rayHit;
 
         [Header("Weapon Identity-----------------------------------------------------------------------------")]
         public bool owned;
@@ -57,6 +57,7 @@ namespace PlayerObject
         [field: SerializeField] public bool hasMag { get; private set; }
         public int currentMagSize { get; private set; }
         [SerializeField] private float reloadTime;
+        public bool isReloading { get; private set; }
 
         [Header("Burst Fire-----------------------------------------------------------------------------")]
         [SerializeField] private int maxBulletsPerBurst;
@@ -68,7 +69,7 @@ namespace PlayerObject
         [Header("Heat Based-----------------------------------------------------------------------------")]
         [SerializeField] private bool isHeatBased;
         private bool takenOverheatDamage;
-        [SerializeField] private bool alreadyRecharging;
+        private bool alreadyRecharging;
         [SerializeField] private float heatStartRegenDelay;
         [SerializeField] private int regenPerTick;
         [SerializeField] private float fullEmptyDelay;
@@ -91,6 +92,9 @@ namespace PlayerObject
         public void StartEquip()
         {
             readyToShoot = false;
+
+            //possibly doesn't belong here
+            isReloading = false;
         }
 
         public void FinishEquip()
@@ -100,9 +104,9 @@ namespace PlayerObject
 
         private void Update()
         {
-            if (hasMag && Input.GetKeyDown(KeyCode.R) && currentMagSize < maxMagSize && weaponManager.GetCurrentAmmo(weaponIndex) > 0)
+            if (hasMag && Input.GetKeyDown(KeyCode.R) && currentMagSize < maxMagSize && weaponManager.GetCurrentAmmo(weaponIndex) > 0 && !isReloading && currentBurst < 1)
             {
-                readyToShoot = false;
+                isReloading = true;
                 StartCoroutine(ReloadMag());
             }
 
@@ -115,7 +119,7 @@ namespace PlayerObject
                 shooting = Input.GetKey(KeyCode.Mouse0);
             }
 
-            if (readyToShoot)
+            if (readyToShoot && !isReloading)
             {
                 ShootInput();
             }
@@ -167,7 +171,7 @@ namespace PlayerObject
                     }
                     else
                     {
-                        currentBurst = weaponManager.GetCurrentAmmo(weaponIndex);
+                        currentBurst = (hasMag? currentMagSize : weaponManager.GetCurrentAmmo(weaponIndex));
                     }
                 }
 
@@ -256,9 +260,9 @@ namespace PlayerObject
                 }
 
 
-                //float xRecoil = Random.Range(lowerRecoilXMagnitude, upperRecoilXMagnitude);
-                //float yRecoil = Random.Range(lowerRecoilYMagnitude, upperRecoilYMagnitude);
-                //playerCamera.SimulateRecoil(xRecoil, yRecoil);
+                float xRecoil = Random.Range(lowerRecoilXMagnitude, upperRecoilXMagnitude);
+                float yRecoil = Random.Range(lowerRecoilYMagnitude, upperRecoilYMagnitude);
+                playerCamera.SimulateRecoil(xRecoil, yRecoil);
             }
 
             if (currentSpread <= maxSpread)
@@ -303,9 +307,10 @@ namespace PlayerObject
                 wishReload = bulletsInStock;
             }
 
+            currentMagSize += wishReload;
+
             weaponManager.SubtractAmmo(weaponIndex, wishReload);
-            currentMagSize = maxMagSize;
-            readyToShoot = true;
+            isReloading = false;
         }
     }
 }

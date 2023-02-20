@@ -46,5 +46,11 @@ namespace PlayerObject
             playerCamera.rotation = Quaternion.Euler(xRotation, yRotation, 0);
             orientation.rotation = Quaternion.Euler(0, yRotation, 0);
         }
+
+        public void SimulateRecoil(float x, float y)
+        {
+            yRotation += x;
+            xRotation -= y;
+        }
     }
 }

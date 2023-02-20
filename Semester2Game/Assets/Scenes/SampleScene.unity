@@ -736,12 +736,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 963194227}
     - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: burstDelay
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
       propertyPath: maxMagSize
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
       propertyPath: reloadTime
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: singleFire
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
       propertyPath: weaponName
@@ -752,12 +760,44 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 963194229}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
       propertyPath: weaponManager
       value: 
       objectReference: {fileID: 1500099746}
     - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: maxBulletsPerBurst
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: timeBetweenShooting
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: lowerRecoilXMagnitude
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: lowerRecoilYMagnitude
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: upperRecoilXMagnitude
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: upperRecoilYMagnitude
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
       propertyPath: <weaponName>k__BackingField
       value: AK-47 No Mag
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: <isBurstFire>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -1258,7 +1298,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1066388923}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1819,6 +1859,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 963194227}
     - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: burstDelay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
       propertyPath: maxMagSize
       value: 30
       objectReference: {fileID: 0}
@@ -1827,20 +1871,60 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: singleFire
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
       propertyPath: weaponName
       value: AK-74
       objectReference: {fileID: 0}
     - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 963194229}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
       propertyPath: weaponManager
       value: 
       objectReference: {fileID: 1500099746}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: bulletsPerShot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: bulletsSubtracted
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: maxBulletsPerBurst
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: lowerRecoilXMagnitude
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: lowerRecoilYMagnitude
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: upperRecoilXMagnitude
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: upperRecoilYMagnitude
+      value: 3.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
       propertyPath: <hasMag>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
       propertyPath: <weaponName>k__BackingField
-      value: AK-74
+      value: AK-74 Has Mag
+      objectReference: {fileID: 0}
+    - target: {fileID: 6311487778556467170, guid: c02e6789e13fc3d44bfca07d55f86463, type: 3}
+      propertyPath: <isBurstFire>k__BackingField
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
