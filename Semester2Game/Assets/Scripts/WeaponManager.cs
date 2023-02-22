@@ -46,7 +46,7 @@ namespace PlayerObject
             bool mag = weapons[weaponID].GetComponent<Weapon>().hasMag;
             hudManager.UpdateWeapon(GetWeaponName(weaponID),  mag? GetCurrentMagSize(weaponID) : GetCurrentAmmo(weaponID), mag? GetCurrentAmmo(weaponID) : GetMaxAmmo(weaponID));
 
-            //exceptions
+            //exceptions examples
             //weaponCurrentAmmo[3] = weaponCurrentAmmo[2];
             //weaponMaxAmmo[3] = weaponMaxAmmo[2];
         }
@@ -115,6 +115,7 @@ namespace PlayerObject
             {
                 weaponID = 5;
             }
+            //and so on
         }
 
         private void CycleAttack()

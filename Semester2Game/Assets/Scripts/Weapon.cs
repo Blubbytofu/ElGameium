@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ExtensionMethods;
 
 namespace PlayerObject
 {
@@ -13,7 +14,7 @@ namespace PlayerObject
         [SerializeField] private GameObject muzzleFlash, bulletImpact;
         [SerializeField] private LayerMask environmentMask, enemyMask;
         [SerializeField] private Animator weaponAnimator;
-        //public PlayerInventory playerInventory;
+        [SerializeField] PlayerInventory playerInventory;
         [SerializeField] private WeaponManager weaponManager;
         private RaycastHit rayHit;
 
@@ -39,7 +40,7 @@ namespace PlayerObject
         [Header("Spread-----------------------------------------------------------------------------")]
         [SerializeField] private float initialSpread;
         [SerializeField] private float maxSpread;
-        private float currentSpread;
+        [SerializeField] private float currentSpread;
         [SerializeField] private float deltaSpread;
         private float lastShotTime;
         [SerializeField] private float spreadDecreaseDelay;
@@ -56,8 +57,14 @@ namespace PlayerObject
         [SerializeField] private int maxMagSize;
         [field: SerializeField] public bool hasMag { get; private set; }
         public int currentMagSize { get; private set; }
-        [SerializeField] private float reloadTime;
+        //part 1 is before updating ammo
+        [SerializeField] private float reloadTimePart1;
+        //part 2 is interval between updating hud and shooting
+        [SerializeField] private float reloadTimePart2;
+        //total reload time is part1 + part2
         public bool isReloading { get; private set; }
+        [SerializeField] private bool shotgunReload;
+        private bool queuedStop;
 
         [Header("Burst Fire-----------------------------------------------------------------------------")]
         [SerializeField] private int maxBulletsPerBurst;
@@ -93,7 +100,7 @@ namespace PlayerObject
         {
             readyToShoot = false;
 
-            //possibly doesn't belong here
+            //possibly doesn't belong here but no animations yet
             isReloading = false;
         }
 
@@ -104,24 +111,22 @@ namespace PlayerObject
 
         private void Update()
         {
+            shooting = singleFire ? Input.GetKeyDown(KeyCode.Mouse0) : Input.GetKey(KeyCode.Mouse0);
+
+            if (readyToShoot && !isReloading)
+            {
+                ShootInput();
+            }
+
             if (hasMag && Input.GetKeyDown(KeyCode.R) && currentMagSize < maxMagSize && weaponManager.GetCurrentAmmo(weaponIndex) > 0 && !isReloading && currentBurst < 1)
             {
                 isReloading = true;
                 StartCoroutine(ReloadMag());
             }
 
-            if (singleFire)
+            if (isReloading && !queuedStop && shooting)
             {
-                shooting = Input.GetKeyDown(KeyCode.Mouse0);
-            }
-            else
-            {
-                shooting = Input.GetKey(KeyCode.Mouse0);
-            }
-
-            if (readyToShoot && !isReloading)
-            {
-                ShootInput();
+                queuedStop = true;
             }
 
             if (isHeatBased)
@@ -148,7 +153,7 @@ namespace PlayerObject
             if (weaponManager.GetCurrentAmmo(weaponIndex) == 0 && !takenOverheatDamage)
             {
                 takenOverheatDamage = true;
-                //playerInventory.TakeDamage(overheatDamage);
+                playerInventory.TakeDamage(overheatDamage);
             }
         }
 
@@ -239,13 +244,12 @@ namespace PlayerObject
                     GameObject playerProjectile = Instantiate(projectile, attackPoint.position, Quaternion.identity);
 
                     Ray directionRay = playerCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-                    RaycastHit hit;
 
                     Vector3 projectileDestination;
 
-                    if (Physics.Raycast(directionRay, out hit))
+                    if (Physics.Raycast(directionRay, out rayHit))
                     {
-                        projectileDestination = hit.point;
+                        projectileDestination = rayHit.point;
                     }
                     else
                     {
@@ -298,19 +302,53 @@ namespace PlayerObject
 
         private IEnumerator ReloadMag()
         {
-            yield return new WaitForSeconds(reloadTime);
+            int wishReload;
+            int bulletsInStock;
 
-            int wishReload = maxMagSize - currentMagSize;
-            int bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex);
-            if (bulletsInStock < wishReload)
+            if (shotgunReload)
             {
-                wishReload = bulletsInStock;
+                wishReload = 1;
+            }
+            else
+            {
+                wishReload = maxMagSize - currentMagSize;
+                bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex);
+                if (bulletsInStock < wishReload)
+                {
+                    wishReload = bulletsInStock;
+                }
             }
 
-            currentMagSize += wishReload;
+            yield return new WaitForSeconds(reloadTimePart1);
 
+            currentMagSize += wishReload;
             weaponManager.SubtractAmmo(weaponIndex, wishReload);
-            isReloading = false;
+
+            yield return new WaitForSeconds(reloadTimePart2);
+
+            if (shotgunReload)
+            {
+                if (queuedStop)
+                {
+                    queuedStop = false;
+                    isReloading = false;
+                }
+                else
+                {
+                    if (currentMagSize < maxMagSize && weaponManager.GetCurrentAmmo(weaponIndex) > 0)
+                    {
+                        StartCoroutine(ReloadMag());
+                    }
+                    else
+                    {
+                        isReloading = false;
+                    }
+                }
+            }
+            else
+            {
+                isReloading = false;
+            }
         }
     }
 }

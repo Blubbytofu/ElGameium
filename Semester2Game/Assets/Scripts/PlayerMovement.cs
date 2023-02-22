@@ -47,43 +47,88 @@ namespace PlayerObject
         [SerializeField] private float crouchSpeedMultiplier;
         [SerializeField] private float crouchLerpSpeed;
         [SerializeField] private float headClearanceRadius;
-        private bool crouchInput;
-        private bool groundedCrouch;
+        [SerializeField] private bool crouchInput;
+        [SerializeField] private bool groundedCrouch;
 
-        void Start()
+        private enum MovementState
+        {
+            GROUNDED,
+            AIR,
+            LADDER,
+            WATER,
+            NOCLIP,
+            STUNNED
+        }
+
+        private MovementState movementState;
+
+        private void Start()
         {
             Physics.gravity = Physics.gravity.ReplaceField(newY: -gravityMagnitude);
         }
 
 
-        void Update()
+        private void Update()
         {
-            groundHitLength = transform.localScale.y + 0.1f;
+            groundHitLength = playerCollider.height * 0.5f * transform.localScale.y + 0.1f;
             isGrounded = Physics.Raycast(orientation.position, -orientation.up, out groundHit, groundHitLength);
 
             GetInput();
+
+            DetermineMovementState();
         }
 
         private void FixedUpdate()
         {
-            Crouching();
+            SwitchMovementState();
+        }
 
+        private void DetermineMovementState()
+        {
             if (isGrounded)
             {
-                MoveGround();
-                Jumping();
+                movementState = MovementState.GROUNDED;
             }
             else
             {
-                MoveAir();
+                movementState = MovementState.AIR;
             }
         }
 
-        void GetInput()
+        private void SwitchMovementState()
+        {
+            switch (movementState)
+            {
+                case MovementState.GROUNDED:
+                    MoveGround();
+                    Jumping();
+                    Crouching();
+                    break;
+                case MovementState.AIR:
+                    MoveAir();
+                    Crouching();
+                    break;
+                case MovementState.LADDER:
+                    break;
+                case MovementState.WATER:
+                    break;
+                case MovementState.STUNNED:
+                    break;
+            }
+        }
+
+        private void GetInput()
         {
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !jumpInput)
             {
                 jumpInput = true;
+            }
+
+            if (Input.GetKey(KeyCode.Space) && !jumpInput && groundedCrouch)
+            {
+                groundedCrouch = false;
+                jumpInput = true;
+                Jumping();
             }
 
             if (Input.GetKey(KeyCode.LeftShift) && !crouchInput)
@@ -97,7 +142,7 @@ namespace PlayerObject
 
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                if (Physics.Raycast(orientation.position, -orientation.up, normalHeight))
+                if (isGrounded)
                 {
                     groundedCrouch = true;
                 }
@@ -199,24 +244,25 @@ namespace PlayerObject
         {
             if (crouchInput)
             {
-                //transform.localScale = transform.localScale.ReplaceField(newY: Mathf.Lerp(transform.localScale.y, crouchHeight, crouchLerpSpeed * Time.deltaTime));
                 playerCollider.height = Mathf.Lerp(playerCollider.height, 1, crouchLerpSpeed * Time.deltaTime);
-                cameraPosition.localPosition = new Vector3(0, 0.22f, 0);
+                cameraPosition.localPosition = cameraPosition.localPosition.ReplaceField(newY: Mathf.Lerp(cameraPosition.localPosition.y, 0.22f, crouchLerpSpeed * Time.deltaTime));
 
                 if (groundedCrouch)
                 {
-                    playerRb.AddForce(groundedCrouchForce * -orientation.up, ForceMode.Impulse);
-                    if (isGrounded)
+                    if (playerCollider.height < 1.01f)
                     {
                         groundedCrouch = false;
+                    }
+                    else if(!isGrounded)
+                    {
+                        playerRb.AddForce(groundedCrouchForce * -orientation.up, ForceMode.Impulse);
                     }
                 }
             }
             else
             {
-                //transform.localScale = transform.localScale.ReplaceField(newY: normalHeight);
                 playerCollider.height = Mathf.Lerp(playerCollider.height, 2, crouchLerpSpeed * Time.deltaTime);
-                cameraPosition.localPosition = new Vector3(0, 0.67f, 0);
+                cameraPosition.localPosition = cameraPosition.localPosition.ReplaceField(newY: Mathf.Lerp(cameraPosition.localPosition.y, 0.67f, crouchLerpSpeed * Time.deltaTime));
             }
         }
 
