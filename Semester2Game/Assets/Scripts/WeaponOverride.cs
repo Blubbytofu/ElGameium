@@ -10,11 +10,22 @@ namespace PlayerObject
         [SerializeField] private Camera pCamera;
 
         [SerializeField] private bool singleFire;
-        private bool shooting;
+        public bool shooting { get; private set; }
 
-        [SerializeField] private bool zoomIn;
-        [SerializeField] private bool altFireMode;
+        [SerializeField] private bool zoom;
+        [SerializeField] private int zoomAmount;
+
+        [SerializeField] private bool dualWield;
+        [SerializeField] private GameObject secondGun;
+
+        [SerializeField] private bool altBurstMode;
         [SerializeField] private bool altProjectile;
+
+        [SerializeField] private bool affectSpread;
+        [SerializeField] private float normalInitialSpread;
+        [SerializeField] private float normalMaxSpread;
+        [SerializeField] private float newInitialSpread;
+        [SerializeField] private float newMaxSpread;
 
         private void Update()
         {
@@ -47,18 +58,57 @@ namespace PlayerObject
 
         private void ExecuteShoot()
         {
-            if (zoomIn)
+            if (dualWield)
             {
                 if (shooting)
                 {
-                    //pCamera.fieldOfView = 70;
+                    secondGun.SetActive(true);
+                    weapon.activeSecondary = true;
                 }
                 else
                 {
-                    //pCamera.fieldOfView = 90;
+                    secondGun.SetActive(false);
+                    weapon.activeSecondary = false;
                 }
             }
 
+            if (zoom)
+            {
+                if (shooting)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+
+            if (altBurstMode)
+            {
+                if (shooting)
+                {
+                    weapon.isBurstFire = true;
+                }
+                else
+                {
+                    weapon.isBurstFire = false;
+                }
+            }
+
+            if (affectSpread)
+            {
+                if (shooting)
+                {
+                    weapon.initialSpread = newInitialSpread;
+                    weapon.maxSpread = newMaxSpread;
+                }
+                else
+                {
+                    weapon.initialSpread = normalInitialSpread;
+                    weapon.maxSpread = normalMaxSpread;
+                }
+            }
         }
     }
 }

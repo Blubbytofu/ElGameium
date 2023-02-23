@@ -10,6 +10,8 @@ namespace PlayerObject
         [SerializeField] private Transform orientation;
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform playerCamera;
+        [SerializeField] private Camera primaryCamera;
+        [SerializeField] private Camera secondaryCamera;
 
         private float mouseX;
         private float mouseY;
@@ -19,6 +21,8 @@ namespace PlayerObject
         [Header("Player Settings")]
         [SerializeField] private float xSensitivity = 2f;
         [SerializeField] private float ySensitivity = 2f;
+        [SerializeField] private float FOV;
+        [SerializeField] private float secondaryFOV;
 
         private void Start()
         {
@@ -51,6 +55,12 @@ namespace PlayerObject
         {
             yRotation += x;
             xRotation -= y;
+        }
+
+        public void UpdateAllFOV(float newFOV, float newSecondFOV)
+        {
+            primaryCamera.fieldOfView = newFOV;
+            secondaryCamera.fieldOfView = newSecondFOV;
         }
     }
 }

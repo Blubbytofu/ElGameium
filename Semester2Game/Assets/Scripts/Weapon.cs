@@ -38,8 +38,8 @@ namespace PlayerObject
         [SerializeField] private float projectileYVel;
 
         [Header("Spread-----------------------------------------------------------------------------")]
-        [SerializeField] private float initialSpread;
-        [SerializeField] private float maxSpread;
+        public float initialSpread;
+        public float maxSpread;
         [SerializeField] private float currentSpread;
         [SerializeField] private float deltaSpread;
         private float lastShotTime;
@@ -56,7 +56,7 @@ namespace PlayerObject
         [Header("Magazine-----------------------------------------------------------------------------")]
         [SerializeField] private int maxMagSize;
         [field: SerializeField] public bool hasMag { get; private set; }
-        public int currentMagSize { get; private set; }
+        [field: SerializeField] public int currentMagSize { get; private set; }
         //part 1 is before updating ammo
         [SerializeField] private float reloadTimePart1;
         //part 2 is interval between updating hud and shooting
@@ -68,7 +68,7 @@ namespace PlayerObject
 
         [Header("Burst Fire-----------------------------------------------------------------------------")]
         [SerializeField] private int maxBulletsPerBurst;
-        [field: SerializeField] public bool isBurstFire { get; private set; }
+        public bool isBurstFire;
         [SerializeField] private float burstDelay;
 
         public int currentBurst { get; private set; }
@@ -86,6 +86,11 @@ namespace PlayerObject
         [Header("Special Properties-----------------------------------------------------------------------------")]
         //is delay between fire input and actual shot
         [SerializeField] private float fireInputDelay;
+        public bool isParentWeapon;
+        public Weapon childWeapon;
+        [SerializeField] private bool isChildWeapon;
+        [SerializeField] private Weapon parentWeapon;
+        public bool activeSecondary;
 
         private void Awake()
         {
@@ -99,8 +104,6 @@ namespace PlayerObject
         public void StartEquip()
         {
             readyToShoot = false;
-
-            //possibly doesn't belong here but no animations yet
             isReloading = false;
         }
 
@@ -111,7 +114,19 @@ namespace PlayerObject
 
         private void Update()
         {
-            shooting = singleFire ? Input.GetKeyDown(KeyCode.Mouse0) : Input.GetKey(KeyCode.Mouse0);
+            if (isChildWeapon && !parentWeapon.isActiveAndEnabled)
+            {
+                gameObject.SetActive(false);
+            }
+
+            if (isParentWeapon)
+            {
+                shooting = (singleFire ? Input.GetKeyDown(KeyCode.Mouse0) : Input.GetKey(KeyCode.Mouse0)) && (childWeapon.readyToShoot || !activeSecondary);
+            }
+            else
+            {
+                shooting = singleFire ? Input.GetKeyDown(KeyCode.Mouse0) : Input.GetKey(KeyCode.Mouse0);
+            }
 
             if (readyToShoot && !isReloading)
             {
@@ -120,7 +135,17 @@ namespace PlayerObject
 
             if (hasMag && Input.GetKeyDown(KeyCode.R) && currentMagSize < maxMagSize && weaponManager.GetCurrentAmmo(weaponIndex) > 0 && !isReloading && currentBurst < 1)
             {
+                if (isChildWeapon && weaponManager.GetCurrentAmmo(weaponIndex) == 1)
+                {
+                    return;
+                }
+
                 isReloading = true;
+                if (weaponAnimator != null)
+                {
+                    weaponAnimator.SetTrigger("_reload");
+                }
+
                 StartCoroutine(ReloadMag());
             }
 
@@ -312,7 +337,29 @@ namespace PlayerObject
             else
             {
                 wishReload = maxMagSize - currentMagSize;
-                bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex);
+
+                if (isParentWeapon)
+                {
+                    bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex);
+                    //even stock
+                    if (bulletsInStock % 2 == 0)
+                    {
+                        bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex) / 2;
+                    }
+                    else
+                    {
+                        bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex) / 2 + 1;
+                    }
+                }
+                else if (isChildWeapon)
+                {
+                    bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex) / 2;
+                }
+                else
+                {
+                    bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex);
+                }
+
                 if (bulletsInStock < wishReload)
                 {
                     wishReload = bulletsInStock;

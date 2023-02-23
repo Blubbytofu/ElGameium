@@ -17,8 +17,8 @@ namespace PlayerObject
         [Header("Walking")]
         [SerializeField] private float walkingVelMultiplier;
         private bool walkingInput;
-        private int vInput;
-        private int hInput;
+        public int vInput { get; private set; }
+        public int hInput { get; private set; }
 
         [Header("Grounded")]
         [SerializeField] private float maxGroundedVel;

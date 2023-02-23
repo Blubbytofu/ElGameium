@@ -19,10 +19,12 @@ namespace PlayerObject
         [SerializeField] private int[] weaponMaxAmmo;
         private int weaponID;
 
-        //[SerializeField] private PlayerMovement playerMovement;
-        //[SerializeField] private float centerHorizontalPosition;
-        //[SerializeField] private float swayAmplitude;
-        //[SerializeField] private float swayFrequency;
+        [SerializeField] private PlayerMovement playerMovement;
+        [SerializeField] private float centerHorizontalPosition;
+        [SerializeField] private float swayAmplitude;
+        [SerializeField] private float swayFrequency;
+        [SerializeField] private float offsetMagnitude;
+        [SerializeField] private float offsetSpeed;
 
         [SerializeField] private bool canScroll;
 
@@ -34,6 +36,7 @@ namespace PlayerObject
         private void Update()
         {
             Weapon weaponComp = weapons[weaponID].GetComponent<Weapon>();
+            WeaponOverride weaponOverride = weapons[weaponID].GetComponent<WeaponOverride>();
             if (!weaponComp.isBurstFire || (weaponComp.isBurstFire && weaponComp.currentBurst < 1))
             {
                 CycleAttack();
@@ -41,10 +44,25 @@ namespace PlayerObject
             }
 
             EquipWeapon();
-            //MoveSway();
+            MoveSway();
 
-            bool mag = weapons[weaponID].GetComponent<Weapon>().hasMag;
-            hudManager.UpdateWeapon(GetWeaponName(weaponID),  mag? GetCurrentMagSize(weaponID) : GetCurrentAmmo(weaponID), mag? GetCurrentAmmo(weaponID) : GetMaxAmmo(weaponID));
+            bool mag = weaponComp.hasMag;
+            bool parent = weaponComp.isParentWeapon && weaponComp.activeSecondary;
+            int secondMagSize = 0;
+            if (parent)
+            {
+                secondMagSize = weaponComp.childWeapon.currentMagSize;
+            }
+            hudManager.UpdateWeapon(parent ? GetWeaponName(weaponID) + " x2": GetWeaponName(weaponID),  mag ? (parent ? GetCurrentMagSize(weaponID) + secondMagSize : GetCurrentMagSize(weaponID)) : GetCurrentAmmo(weaponID), mag ? GetCurrentAmmo(weaponID) : GetMaxAmmo(weaponID));
+
+            if (weaponOverride != null)
+            {
+                hudManager.IndicateAltFire(weaponOverride.shooting);
+            }
+            else
+            {
+                hudManager.IndicateAltFire(false);
+            }
 
             //exceptions examples
             //weaponCurrentAmmo[3] = weaponCurrentAmmo[2];
@@ -58,10 +76,9 @@ namespace PlayerObject
             weapons[index].GetComponent<Weapon>().owned = true;
         }
 
-        /*
         private void MoveSway()
         {
-            if (playerMovement.forwardInput != 0 || playerMovement.sideInput != 0)
+            if (playerMovement.vInput != 0 || playerMovement.hInput != 0)
             {
                 Vector3 pos = Vector3.zero;
                 pos.y += swayAmplitude * Mathf.Sin((Time.time * swayFrequency));
@@ -71,23 +88,23 @@ namespace PlayerObject
             }
             else
             {
-                transform.localPosition = Vector3.zero;
+                //transform.localPosition = Vector3.zero;
+                transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * offsetSpeed);
             }
 
-            if (playerMovement.sideInput > 0)
+            if (playerMovement.hInput > 0)
             {
-                centerHorizontalPosition = Mathf.Lerp(centerHorizontalPosition, -0.05f, 1 / 25f);
+                centerHorizontalPosition = Mathf.Lerp(centerHorizontalPosition, -offsetMagnitude, Time.deltaTime * offsetSpeed);
             }
-            else if (playerMovement.sideInput < 0)
+            else if (playerMovement.hInput < 0)
             {
-                centerHorizontalPosition = Mathf.Lerp(centerHorizontalPosition, 0.05f, 1 / 25f);
+                centerHorizontalPosition = Mathf.Lerp(centerHorizontalPosition, offsetMagnitude, Time.deltaTime * offsetSpeed);
             }
             else
             {
-                centerHorizontalPosition = Mathf.Lerp(centerHorizontalPosition, 0, 1 / 10f);
+                centerHorizontalPosition = Mathf.Lerp(centerHorizontalPosition, 0, Time.deltaTime * offsetSpeed);
             }
         }
-        */
 
         private void WeaponNumber()
         {
