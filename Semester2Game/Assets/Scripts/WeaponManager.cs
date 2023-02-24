@@ -78,13 +78,36 @@ namespace PlayerObject
 
         private void MoveSway()
         {
+            if (playerMovement.walkingInput)
+            {
+                swayAmplitude = 0.007f;
+                swayFrequency = 8;
+                offsetMagnitude = 0.01f;
+                offsetSpeed = 40;
+            }
+            else if (playerMovement.crouchInput)
+            {
+                swayAmplitude = 0.003f;
+                swayFrequency = 6;
+                offsetMagnitude = 0;
+                offsetSpeed = 40;
+            }
+            else
+            {
+                swayAmplitude = 0.01f;
+                swayFrequency = 15;
+                offsetMagnitude = 0.02f;
+                offsetSpeed = 20;
+            }
+
             if (playerMovement.vInput != 0 || playerMovement.hInput != 0)
             {
                 Vector3 pos = Vector3.zero;
                 pos.y += swayAmplitude * Mathf.Sin((Time.time * swayFrequency));
                 pos.x += swayAmplitude * 2 * Mathf.Cos((Time.time * swayFrequency / 2));
 
-                transform.localPosition = new Vector3(centerHorizontalPosition + pos.x, pos.y, 0);
+                //transform.localPosition = new Vector3(centerHorizontalPosition + pos.x, pos.y, 0);
+                transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(centerHorizontalPosition + pos.x, pos.y, 0), offsetSpeed * Time.deltaTime);
             }
             else
             {

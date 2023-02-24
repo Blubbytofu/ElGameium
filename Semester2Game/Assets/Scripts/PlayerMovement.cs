@@ -16,7 +16,7 @@ namespace PlayerObject
 
         [Header("Walking")]
         [SerializeField] private float walkingVelMultiplier;
-        private bool walkingInput;
+        public bool walkingInput { get; private set; }
         public int vInput { get; private set; }
         public int hInput { get; private set; }
 
@@ -47,7 +47,7 @@ namespace PlayerObject
         [SerializeField] private float crouchSpeedMultiplier;
         [SerializeField] private float crouchLerpSpeed;
         [SerializeField] private float headClearanceRadius;
-        [SerializeField] private bool crouchInput;
+        public bool crouchInput { get; private set; }
         [SerializeField] private bool groundedCrouch;
 
         private enum MovementState

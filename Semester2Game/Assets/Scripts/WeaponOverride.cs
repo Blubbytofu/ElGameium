@@ -92,7 +92,10 @@ namespace PlayerObject
                 }
                 else
                 {
-                    weapon.isBurstFire = false;
+                    if (weapon.currentBurst < 1)
+                    {
+                        weapon.isBurstFire = false;
+                    }
                 }
             }
 

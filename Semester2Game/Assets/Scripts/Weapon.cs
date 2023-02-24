@@ -11,7 +11,8 @@ namespace PlayerObject
         [SerializeField] private Camera playerCam;
         [SerializeField] private PlayerCamera playerCamera;
         [SerializeField] private Transform attackPoint;
-        [SerializeField] private GameObject muzzleFlash, bulletImpact;
+        [SerializeField] private GameObject bulletImpact;
+        [SerializeField] private ParticleSystem muzzleFlash;
         [SerializeField] private LayerMask environmentMask, enemyMask;
         [SerializeField] private Animator weaponAnimator;
         [SerializeField] PlayerInventory playerInventory;
@@ -52,6 +53,14 @@ namespace PlayerObject
         [SerializeField] private float upperRecoilXMagnitude;
         [SerializeField] private float lowerRecoilYMagnitude;
         [SerializeField] private float upperRecoilYMagnitude;
+
+        [Header("Tracer-------------------------------------------------------------------------------")]
+        [SerializeField] private GameObject tracer;
+        private Vector3 tracerEndPoint;
+        [SerializeField] private float tracerSpawnDistance;
+        [SerializeField] private float tracerLifetime;
+        [SerializeField] private int bulletsBetweenTracers;
+        private int currentBulletsBetweenTracers;
 
         [Header("Magazine-----------------------------------------------------------------------------")]
         [SerializeField] private int maxMagSize;
@@ -122,6 +131,10 @@ namespace PlayerObject
             if (isParentWeapon)
             {
                 shooting = (singleFire ? Input.GetKeyDown(KeyCode.Mouse0) : Input.GetKey(KeyCode.Mouse0)) && (childWeapon.readyToShoot || !activeSecondary);
+            }
+            else if (isChildWeapon)
+            {
+                shooting = !parentWeapon.isReloading && (singleFire ? Input.GetKeyDown(KeyCode.Mouse0) : Input.GetKey(KeyCode.Mouse0));
             }
             else
             {
@@ -215,6 +228,14 @@ namespace PlayerObject
             }
         }
 
+        public void MuzzleFlash()
+        {
+            if (muzzleFlash != null)
+            {
+                muzzleFlash.Play();
+            }
+        }
+
         private void Shoot()
         {
             if (weaponAnimator != null)
@@ -224,12 +245,6 @@ namespace PlayerObject
 
             //weaponManager.PlayAttackSound(weaponIndex);
 
-            if (muzzleFlash != null)
-            {
-                //GameObject flash = Instantiate(muzzleFlash, attackPoint.position, Quaternion.identity);
-                //flash.GetComponent<MuzzleFlash>().attackPoint = attackPoint;
-            }
-
             if (hasMag)
             {
                 currentMagSize -= bulletsSubtracted;
@@ -238,7 +253,6 @@ namespace PlayerObject
             {
                 weaponManager.SubtractAmmo(weaponIndex, bulletsSubtracted);
             }
-
 
             for (int shotBullets = 0; shotBullets < bulletsPerShot; shotBullets++)
             {
@@ -261,6 +275,33 @@ namespace PlayerObject
                         if (damageable != null)
                         {
                             damageable.RecieveDamage(damage);
+                        }
+
+                        if (tracer != null && currentBulletsBetweenTracers == bulletsBetweenTracers)
+                        {
+                            tracerEndPoint = rayHit.point;
+                        }
+                    }
+                    else
+                    {
+                        if (tracer != null && currentBulletsBetweenTracers == bulletsBetweenTracers)
+                        {
+                            tracerEndPoint = attackPoint.forward * range;
+                        }
+                    }
+
+                    if (tracer != null)
+                    {
+                        if (currentBulletsBetweenTracers == bulletsBetweenTracers)
+                        {
+                            LineRenderer tracerObj = Instantiate(tracer, attackPoint.position, Quaternion.identity).GetComponent<LineRenderer>();
+                            tracerObj.gameObject.GetComponent<BulletTracer>().PassConstraints(attackPoint, tracerSpawnDistance, tracerEndPoint);
+                            Destroy(tracerObj.gameObject, tracerLifetime);
+                            currentBulletsBetweenTracers = 0;
+                        }
+                        else
+                        {
+                            currentBulletsBetweenTracers++;
                         }
                     }
                 }
@@ -328,7 +369,7 @@ namespace PlayerObject
         private IEnumerator ReloadMag()
         {
             int wishReload;
-            int bulletsInStock;
+            int bulletsInStock = 0;
 
             if (shotgunReload)
             {
@@ -341,14 +382,17 @@ namespace PlayerObject
                 if (isParentWeapon)
                 {
                     bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex);
-                    //even stock
-                    if (bulletsInStock % 2 == 0)
+                    if (activeSecondary)
                     {
-                        bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex) / 2;
-                    }
-                    else
-                    {
-                        bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex) / 2 + 1;
+                        //even stock
+                        if (bulletsInStock % 2 == 0)
+                        {
+                            bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex) / 2;
+                        }
+                        else
+                        {
+                            bulletsInStock = weaponManager.GetCurrentAmmo(weaponIndex) / 2 + 1;
+                        }
                     }
                 }
                 else if (isChildWeapon)
