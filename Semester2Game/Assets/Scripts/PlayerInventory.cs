@@ -55,7 +55,7 @@ namespace PlayerObject
                     {
                         Invoke(nameof(OffOxygenText), hideOxygenDelay);
                     }
-                    lastOxygenTime = Time.time;
+                    lastOxygenTime = Time.time + hideOxygenDelay;
                 }
             }
 
@@ -75,7 +75,10 @@ namespace PlayerObject
 
         private void OffOxygenText()
         {
-            hudManager.ToggleOxygenMonitor(false);
+            if (!playerCamera.breathingWater)
+            {
+                hudManager.ToggleOxygenMonitor(false);
+            }
         }
 
         public IEnumerator DamageOverTime(int ticks, float delay, int damage)

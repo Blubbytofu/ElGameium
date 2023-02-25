@@ -54,6 +54,7 @@ namespace PlayerObject
         [Header("Water")]
         [SerializeField] private float waterDrag;
         [SerializeField] private float maxWaterVel;
+        [SerializeField] private float waterDownForce;
         public bool inWater { get; private set; }
         private int upwardsInput;
 
@@ -239,6 +240,11 @@ namespace PlayerObject
             if (playerRb.velocity.magnitude < maxWaterVel)
             {
                 playerRb.velocity += (maxWaterVel - playerRb.velocity.magnitude) * moveD;
+            }
+
+            if (hInput == 0 && vInput == 0 && upwardsInput == 0)
+            {
+                playerRb.AddForce(-waterDownForce * orientation.up, ForceMode.Acceleration);
             }
         }
 

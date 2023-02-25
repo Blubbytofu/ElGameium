@@ -73,6 +73,7 @@ namespace PlayerObject
         //total reload time is part1 + part2
         public bool isReloading { get; private set; }
         [SerializeField] private bool shotgunReload;
+        private bool firstShotgunReload;
         private bool queuedStop;
 
         [Header("Burst Fire-----------------------------------------------------------------------------")]
@@ -154,6 +155,11 @@ namespace PlayerObject
                 }
 
                 isReloading = true;
+
+                if (shotgunReload)
+                {
+                    firstShotgunReload = true;
+                }
 
                 StartCoroutine(ReloadMag());
             }
@@ -366,7 +372,22 @@ namespace PlayerObject
         {
             if (weaponAnimator != null)
             {
-                weaponAnimator.SetTrigger("_reload");
+                if (shotgunReload)
+                {
+                    if (firstShotgunReload)
+                    {
+                        firstShotgunReload = false;
+                        weaponAnimator.SetTrigger("_reload");
+                    }
+                    else
+                    {
+                        weaponAnimator.SetTrigger("_continueReload");
+                    }
+                }
+                else
+                {
+                    weaponAnimator.SetTrigger("_reload");
+                }
             }
 
             int wishReload;

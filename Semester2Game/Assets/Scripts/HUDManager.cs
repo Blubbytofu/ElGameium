@@ -7,6 +7,7 @@ namespace PlayerObject
 {
     public class HUDManager : MonoBehaviour
     {
+        [SerializeField] private TextMeshProUGUI fpsCounter;
         [SerializeField] private TextMeshProUGUI weaponNameText;
         [SerializeField] private TextMeshProUGUI ammoText;
         [SerializeField] private TextMeshProUGUI healthText;
@@ -14,6 +15,21 @@ namespace PlayerObject
         [SerializeField] private TextMeshProUGUI oxygenText;
         public GameObject oxygenIndicator;
         [SerializeField] private GameObject altIndicator;
+
+        private void Start()
+        {
+            StartCoroutine(TrackFrames());
+        }
+
+        private IEnumerator TrackFrames()
+        {
+            while (true)
+            {
+                int frames = (int)(1 / Time.unscaledDeltaTime);
+                fpsCounter.text = "FPS " + frames;
+                yield return new WaitForSeconds(1f);
+            }
+        }
 
         public void UpdateWeapon(string weaponName, int currentAmmo, int maxAmmo)
         {
