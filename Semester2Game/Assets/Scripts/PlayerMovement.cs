@@ -9,6 +9,7 @@ namespace PlayerObject
     {
         [Header("References")]
         [SerializeField] private Rigidbody playerRb;
+        [SerializeField] private Transform playerCameraTransform;
         [SerializeField] private CapsuleCollider playerCollider;
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform orientation;
@@ -50,6 +51,12 @@ namespace PlayerObject
         public bool crouchInput { get; private set; }
         [SerializeField] private bool groundedCrouch;
 
+        [Header("Water")]
+        [SerializeField] private float waterDrag;
+        [SerializeField] private float maxWaterVel;
+        public bool inWater { get; private set; }
+        private int upwardsInput;
+
         private enum MovementState
         {
             GROUNDED,
@@ -80,23 +87,6 @@ namespace PlayerObject
 
         private void FixedUpdate()
         {
-            SwitchMovementState();
-        }
-
-        private void DetermineMovementState()
-        {
-            if (isGrounded)
-            {
-                movementState = MovementState.GROUNDED;
-            }
-            else
-            {
-                movementState = MovementState.AIR;
-            }
-        }
-
-        private void SwitchMovementState()
-        {
             switch (movementState)
             {
                 case MovementState.GROUNDED:
@@ -111,15 +101,67 @@ namespace PlayerObject
                 case MovementState.LADDER:
                     break;
                 case MovementState.WATER:
+                    MoveWater();
+                    Crouching();
                     break;
                 case MovementState.STUNNED:
                     break;
             }
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Water"))
+            {
+                inWater = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.CompareTag("Water"))
+            {
+                inWater = false;
+            }
+        }
+
+        private void DetermineMovementState()
+        {
+            if (inWater)
+            {
+                movementState = MovementState.WATER;
+                return;
+            }
+
+            if (isGrounded)
+            {
+                movementState = MovementState.GROUNDED;
+            }
+            else
+            {
+                movementState = MovementState.AIR;
+            }
+        }
+
         private void GetInput()
         {
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !jumpInput)
+            if (inWater)
+            {
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    upwardsInput = 1;
+                }
+                else if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    upwardsInput = -1;
+                }
+                else
+                {
+                    upwardsInput = 0;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !jumpInput && !inWater)
             {
                 jumpInput = true;
             }
@@ -131,7 +173,7 @@ namespace PlayerObject
                 Jumping();
             }
 
-            if (Input.GetKey(KeyCode.LeftShift) && !crouchInput)
+            if (Input.GetKey(KeyCode.LeftShift) && !crouchInput && !inWater)
             {
                 walkingInput = true;
             }
@@ -183,6 +225,20 @@ namespace PlayerObject
             else
             {
                 hInput = 0;
+            }
+        }
+
+        private void MoveWater()
+        {
+            playerRb.useGravity = false;
+            playerRb.drag = waterDrag;
+
+            Vector3 moveD = vInput * playerCameraTransform.forward + hInput * playerCameraTransform.right + upwardsInput * orientation.up;
+            moveD.Normalize();
+
+            if (playerRb.velocity.magnitude < maxWaterVel)
+            {
+                playerRb.velocity += (maxWaterVel - playerRb.velocity.magnitude) * moveD;
             }
         }
 
@@ -242,7 +298,12 @@ namespace PlayerObject
 
         private void Crouching()
         {
-            if (crouchInput)
+            if (inWater)
+            {
+                playerCollider.height = Mathf.Lerp(playerCollider.height, 2, crouchLerpSpeed * Time.deltaTime);
+                cameraPosition.localPosition = cameraPosition.localPosition.ReplaceField(newY: Mathf.Lerp(cameraPosition.localPosition.y, 0.67f, crouchLerpSpeed * Time.deltaTime));
+            }
+            else if (crouchInput)
             {
                 playerCollider.height = Mathf.Lerp(playerCollider.height, 1, crouchLerpSpeed * Time.deltaTime);
                 cameraPosition.localPosition = cameraPosition.localPosition.ReplaceField(newY: Mathf.Lerp(cameraPosition.localPosition.y, 0.22f, crouchLerpSpeed * Time.deltaTime));
@@ -266,11 +327,18 @@ namespace PlayerObject
             }
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(orientation.position, orientation.position - new Vector3(0, groundHitLength, 0));
             Gizmos.DrawWireSphere(orientation.position + normalHeight * orientation.up, headClearanceRadius);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(orientation.position + (normalHeight - headClearanceRadius) * 0.5f * playerCollider.height * orientation.up, headClearanceRadius);
+            Gizmos.DrawWireSphere(orientation.position - (normalHeight - headClearanceRadius) * 0.5f * playerCollider.height * orientation.up, headClearanceRadius);
         }
     }
 }

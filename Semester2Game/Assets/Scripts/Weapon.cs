@@ -141,12 +141,12 @@ namespace PlayerObject
                 shooting = singleFire ? Input.GetKeyDown(KeyCode.Mouse0) : Input.GetKey(KeyCode.Mouse0);
             }
 
-            if (readyToShoot && !isReloading)
+            if (readyToShoot && !isReloading && currentBurst < 1)
             {
                 ShootInput();
             }
 
-            if (hasMag && Input.GetKeyDown(KeyCode.R) && currentMagSize < maxMagSize && weaponManager.GetCurrentAmmo(weaponIndex) > 0 && !isReloading && currentBurst < 1)
+            if ((currentMagSize == 0 || Input.GetKeyDown(KeyCode.R)) && (hasMag && currentMagSize < maxMagSize && weaponManager.GetCurrentAmmo(weaponIndex) > 0 && !isReloading && currentBurst < 1))
             {
                 if (isChildWeapon && weaponManager.GetCurrentAmmo(weaponIndex) == 1)
                 {
@@ -154,10 +154,6 @@ namespace PlayerObject
                 }
 
                 isReloading = true;
-                if (weaponAnimator != null)
-                {
-                    weaponAnimator.SetTrigger("_reload");
-                }
 
                 StartCoroutine(ReloadMag());
             }
@@ -238,12 +234,12 @@ namespace PlayerObject
 
         private void Shoot()
         {
+            //weaponManager.PlayAttackSound(weaponIndex);
+
             if (weaponAnimator != null)
             {
                 weaponAnimator.SetTrigger("_shoot");
             }
-
-            //weaponManager.PlayAttackSound(weaponIndex);
 
             if (hasMag)
             {
@@ -286,7 +282,7 @@ namespace PlayerObject
                     {
                         if (tracer != null && currentBulletsBetweenTracers == bulletsBetweenTracers)
                         {
-                            tracerEndPoint = attackPoint.forward * range;
+                            tracerEndPoint = playerCam.transform.position + range * (totalSpread + playerCam.transform.forward);
                         }
                     }
 
@@ -368,6 +364,11 @@ namespace PlayerObject
 
         private IEnumerator ReloadMag()
         {
+            if (weaponAnimator != null)
+            {
+                weaponAnimator.SetTrigger("_reload");
+            }
+
             int wishReload;
             int bulletsInStock = 0;
 

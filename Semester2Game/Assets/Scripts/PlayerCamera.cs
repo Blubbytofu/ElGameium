@@ -24,10 +24,31 @@ namespace PlayerObject
         [SerializeField] private float FOV;
         [SerializeField] private float secondaryFOV;
 
+        [Header("Head Size")]
+        [SerializeField] private float headRadius;
+        public bool breathingWater { get; private set; }
+
         private void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+        }
+
+        private void Update()
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, headRadius);
+            foreach (Collider col in colliders)
+            {
+                if (col.CompareTag("Water"))
+                {
+                    breathingWater = true;
+                    break;
+                }
+                else
+                {
+                    breathingWater = false;
+                }
+            }
         }
 
         private void LateUpdate()
@@ -61,6 +82,12 @@ namespace PlayerObject
         {
             primaryCamera.fieldOfView = newFOV;
             secondaryCamera.fieldOfView = newSecondFOV;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, headRadius);
         }
     }
 }

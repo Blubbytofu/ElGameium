@@ -11,6 +11,8 @@ namespace PlayerObject
         [SerializeField] private TextMeshProUGUI ammoText;
         [SerializeField] private TextMeshProUGUI healthText;
         [SerializeField] private TextMeshProUGUI armorText;
+        [SerializeField] private TextMeshProUGUI oxygenText;
+        public GameObject oxygenIndicator;
         [SerializeField] private GameObject altIndicator;
 
         public void UpdateWeapon(string weaponName, int currentAmmo, int maxAmmo)
@@ -31,6 +33,16 @@ namespace PlayerObject
         public void UpdateArmor(int newArmor)
         {
             armorText.text = newArmor.ToString();
+        }
+
+        public void UpdateOxygen(int newOxygen)
+        {
+            oxygenText.text = newOxygen.ToString();
+        }
+
+        public void ToggleOxygenMonitor(bool state)
+        {
+            oxygenIndicator.SetActive(state);
         }
     }
 }

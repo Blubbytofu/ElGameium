@@ -78,7 +78,14 @@ namespace PlayerObject
 
         private void MoveSway()
         {
-            if (playerMovement.walkingInput)
+            if (playerMovement.inWater)
+            {
+                swayAmplitude = 0;
+                swayFrequency = 0;
+                offsetMagnitude = 0.01f;
+                offsetSpeed = 40;
+            }
+            else if (playerMovement.walkingInput)
             {
                 swayAmplitude = 0.007f;
                 swayFrequency = 8;
