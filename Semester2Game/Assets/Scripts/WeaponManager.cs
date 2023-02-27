@@ -162,6 +162,14 @@ namespace PlayerObject
             {
                 weaponID = 5;
             }
+            else if (Input.GetKeyDown(KeyCode.Alpha7) && weapons.Length > 6 && weapons[6].GetComponent<Weapon>().owned)
+            {
+                weaponID = 6;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha8) && weapons.Length > 7 && weapons[7].GetComponent<Weapon>().owned)
+            {
+                weaponID = 7;
+            }
             //and so on
         }
 

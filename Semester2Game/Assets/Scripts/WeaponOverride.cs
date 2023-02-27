@@ -7,13 +7,13 @@ namespace PlayerObject
     public class WeaponOverride : MonoBehaviour
     {
         [SerializeField] private Weapon weapon;
-        [SerializeField] private Camera pCamera;
+        [SerializeField] private PlayerCamera pCamera;
 
         [SerializeField] private bool singleFire;
         public bool shooting { get; private set; }
 
         [SerializeField] private bool zoom;
-        [SerializeField] private int zoomAmount;
+        [SerializeField] private float zoomAmount;
 
         [SerializeField] private bool dualWield;
         [SerializeField] private GameObject secondGun;
@@ -76,11 +76,11 @@ namespace PlayerObject
             {
                 if (shooting)
                 {
-
+                    pCamera.zoomFactor = zoomAmount;
                 }
                 else
                 {
-
+                    pCamera.zoomFactor = 1;
                 }
             }
 

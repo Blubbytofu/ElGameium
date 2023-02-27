@@ -21,8 +21,9 @@ namespace PlayerObject
         [Header("Player Settings")]
         [SerializeField] private float xSensitivity = 2f;
         [SerializeField] private float ySensitivity = 2f;
-        [SerializeField] private float FOV;
-        [SerializeField] private float secondaryFOV;
+        [SerializeField] private int FOV;
+        [SerializeField] private int secondaryFOV;
+        [HideInInspector] public float zoomFactor;
 
         [Header("Head Size")]
         [SerializeField] private float headRadius;
@@ -32,6 +33,8 @@ namespace PlayerObject
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            zoomFactor = 1;
         }
 
         private void Update()
@@ -49,6 +52,9 @@ namespace PlayerObject
                     breathingWater = false;
                 }
             }
+
+            primaryCamera.fieldOfView = FOV * (1.0f / zoomFactor);
+            secondaryCamera.fieldOfView = secondaryFOV * (1.0f / zoomFactor);
         }
 
         private void LateUpdate()
@@ -78,10 +84,10 @@ namespace PlayerObject
             xRotation -= y;
         }
 
-        public void UpdateAllFOV(float newFOV, float newSecondFOV)
+        public void UpdateAllFOV(int newFOV, int newSecondFOV)
         {
-            primaryCamera.fieldOfView = newFOV;
-            secondaryCamera.fieldOfView = newSecondFOV;
+            FOV = newFOV;
+            secondaryFOV = newSecondFOV;
         }
 
         private void OnDrawGizmosSelected()
