@@ -24,6 +24,10 @@ namespace PlayerObject
         [Header("Grounded")]
         [SerializeField] private float maxGroundedVel;
         [SerializeField] private float groundDrag;
+        [SerializeField] private float groundSnapTestDistance;
+        [SerializeField] private float groundSnapTolerance;
+        [SerializeField] private int groundSnapForce;
+        [SerializeField] private bool snapToGround;
 
         [Header("In The Air")]
         [SerializeField] private float gravityMagnitude;
@@ -68,7 +72,7 @@ namespace PlayerObject
             STUNNED
         }
 
-        private MovementState movementState;
+        [SerializeField] private MovementState movementState;
 
         private void Start()
         {
@@ -134,7 +138,7 @@ namespace PlayerObject
                 return;
             }
 
-            if (isGrounded)
+            if (isGrounded || snapToGround)
             {
                 movementState = MovementState.GROUNDED;
             }
@@ -278,8 +282,45 @@ namespace PlayerObject
             playerRb.drag = groundDrag;
 
             Vector3 moveD = vInput * orientation.forward + hInput * orientation.right;
-            moveD = Vector3.ProjectOnPlane(moveD, groundHit.normal);
+            Vector3 groundHitNormal = groundHit.normal;
+            moveD = Vector3.ProjectOnPlane(moveD, groundHitNormal);
             moveD.Normalize();
+
+            if (moveD != Vector3.zero)
+            {
+                RaycastHit hit;
+                Physics.Raycast(orientation.position + groundSnapTestDistance * moveD, -orientation.up, out hit);
+
+                //something to return false if on slope
+                Debug.Log(Vector3.Angle(groundHitNormal, hit.normal));
+                if (true)
+                {
+                    if ((hit.distance < normalHeight + groundSnapTolerance || hit.distance > normalHeight - groundSnapTolerance) && hit.distance > normalHeight)
+                    {
+                        snapToGround = true;
+                        moveD = Vector3.ProjectOnPlane(moveD, hit.normal);
+                    }
+                    else
+                    {
+                        snapToGround = false;
+                    }
+                }
+                else
+                {
+                    Debug.Log("fail");
+                    snapToGround = false;
+                }
+            }
+            else
+            {
+                snapToGround = false;
+            }
+
+            if (snapToGround && !isGrounded && !jumpInput)
+            {
+                Debug.Log("snap");
+                playerRb.AddForce(-orientation.up * groundSnapForce, ForceMode.Impulse);
+            }
 
             float maxVel = walkingInput ? maxGroundedVel * walkingVelMultiplier : (crouchInput ? maxGroundedVel * crouchSpeedMultiplier : maxGroundedVel);
 

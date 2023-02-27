@@ -17154,6 +17154,9 @@ MonoBehaviour:
   walkingVelMultiplier: 0.5
   maxGroundedVel: 12
   groundDrag: 5
+  groundSnapTestDistance: 0.2
+  groundSnapTolerance: 1
+  groundSnapForce: 400
   gravityMagnitude: 20
   maxAirVel: 12
   airSpeed: 1
@@ -17172,6 +17175,7 @@ MonoBehaviour:
   waterDrag: 4
   maxWaterVel: 6
   waterDownForce: 5
+  movementState: 0
 --- !u!114 &1066388931
 MonoBehaviour:
   m_ObjectHideFlags: 0
