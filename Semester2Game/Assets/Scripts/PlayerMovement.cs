@@ -24,10 +24,9 @@ namespace PlayerObject
         [Header("Grounded")]
         [SerializeField] private float maxGroundedVel;
         [SerializeField] private float groundDrag;
-        [SerializeField] private float groundSnapTestDistance;
-        [SerializeField] private float groundSnapTolerance;
-        [SerializeField] private int groundSnapForce;
-        [SerializeField] private bool snapToGround;
+        //[SerializeField] private float groundSnapTolerance;
+        //[SerializeField] private int groundSnapForce;
+        //[SerializeField] int stepsSinceLastGrounded;
 
         [Header("In The Air")]
         [SerializeField] private float gravityMagnitude;
@@ -92,6 +91,18 @@ namespace PlayerObject
 
         private void FixedUpdate()
         {
+            /*
+            if (stepsSinceLastGrounded < 1)
+            {
+                stepsSinceLastGrounded++;
+            }
+
+            if (isGrounded)
+            {
+                stepsSinceLastGrounded = 0;
+            }
+            */
+
             switch (movementState)
             {
                 case MovementState.GROUNDED:
@@ -138,7 +149,7 @@ namespace PlayerObject
                 return;
             }
 
-            if (isGrounded || snapToGround)
+            if (isGrounded)// || OnGroundSnap())
             {
                 movementState = MovementState.GROUNDED;
             }
@@ -276,51 +287,37 @@ namespace PlayerObject
             //Debug.Log(sideSpeed);
         }
 
+        /*
+        private bool OnGroundSnap()
+        {
+            if (stepsSinceLastGrounded > 0)
+            {
+                return false;
+            }
+
+            RaycastHit hit;
+            if (Physics.Raycast(orientation.position, -orientation.up, out hit))
+            {
+                float minGroundAngle = 90;
+                if (hit.distance > normalHeight - groundSnapTolerance && hit.distance < normalHeight + groundSnapTolerance && Vector3.Angle(hit.normal, Vector3.up) < minGroundAngle)
+                {
+                    playerRb.MovePosition(new Vector3(playerRb.position.x, playerRb.position.y - (hit.distance - normalHeight), playerRb.position.z));
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        */
+
         private void MoveGround()
         {
             playerRb.useGravity = false;
             playerRb.drag = groundDrag;
 
             Vector3 moveD = vInput * orientation.forward + hInput * orientation.right;
-            Vector3 groundHitNormal = groundHit.normal;
-            moveD = Vector3.ProjectOnPlane(moveD, groundHitNormal);
+            moveD = Vector3.ProjectOnPlane(moveD, groundHit.normal);
             moveD.Normalize();
-
-            if (moveD != Vector3.zero)
-            {
-                RaycastHit hit;
-                Physics.Raycast(orientation.position + groundSnapTestDistance * moveD, -orientation.up, out hit);
-
-                //something to return false if on slope
-                Debug.Log(Vector3.Angle(groundHitNormal, hit.normal));
-                if (true)
-                {
-                    if ((hit.distance < normalHeight + groundSnapTolerance || hit.distance > normalHeight - groundSnapTolerance) && hit.distance > normalHeight)
-                    {
-                        snapToGround = true;
-                        moveD = Vector3.ProjectOnPlane(moveD, hit.normal);
-                    }
-                    else
-                    {
-                        snapToGround = false;
-                    }
-                }
-                else
-                {
-                    Debug.Log("fail");
-                    snapToGround = false;
-                }
-            }
-            else
-            {
-                snapToGround = false;
-            }
-
-            if (snapToGround && !isGrounded && !jumpInput)
-            {
-                Debug.Log("snap");
-                playerRb.AddForce(-orientation.up * groundSnapForce, ForceMode.Impulse);
-            }
 
             float maxVel = walkingInput ? maxGroundedVel * walkingVelMultiplier : (crouchInput ? maxGroundedVel * crouchSpeedMultiplier : maxGroundedVel);
 

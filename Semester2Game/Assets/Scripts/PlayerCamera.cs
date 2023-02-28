@@ -12,6 +12,7 @@ namespace PlayerObject
         [SerializeField] private Transform playerCamera;
         [SerializeField] private Camera primaryCamera;
         [SerializeField] private Camera secondaryCamera;
+        RaycastHit interactHit;
 
         private float mouseX;
         private float mouseY;
@@ -25,9 +26,10 @@ namespace PlayerObject
         [SerializeField] private int secondaryFOV;
         [HideInInspector] public float zoomFactor;
 
-        [Header("Head Size")]
+        [Header("Other")]
         [SerializeField] private float headRadius;
         public bool breathingWater { get; private set; }
+        [SerializeField] private float interactRange;
 
         private void Start()
         {
@@ -39,19 +41,8 @@ namespace PlayerObject
 
         private void Update()
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, headRadius);
-            foreach (Collider col in colliders)
-            {
-                if (col.CompareTag("Water"))
-                {
-                    breathingWater = true;
-                    break;
-                }
-                else
-                {
-                    breathingWater = false;
-                }
-            }
+            TryInteract();
+            DetectHead();
 
             primaryCamera.fieldOfView = FOV * (1.0f / zoomFactor);
             secondaryCamera.fieldOfView = secondaryFOV * (1.0f / zoomFactor);
@@ -76,6 +67,38 @@ namespace PlayerObject
 
             playerCamera.rotation = Quaternion.Euler(xRotation, yRotation, 0);
             orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        }
+
+        private void TryInteract()
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (Physics.Raycast(transform.position, transform.forward, out interactHit, interactRange))
+                {
+                    IInteractable interactable = interactHit.transform.gameObject.GetComponent<IInteractable>();
+                    if (interactable != null)
+                    {
+                        interactable.Interact();
+                    }
+                }
+            }
+        }
+
+        private void DetectHead()
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, headRadius);
+            foreach (Collider col in colliders)
+            {
+                if (col.CompareTag("Water"))
+                {
+                    breathingWater = true;
+                    break;
+                }
+                else
+                {
+                    breathingWater = false;
+                }
+            }
         }
 
         public void SimulateRecoil(float x, float y)

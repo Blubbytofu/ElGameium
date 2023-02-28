@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Weapon
   - Death
+  - Water
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Secondary Mask
   - Invisible
   - Enemy
-  - 
+  - Player
   - 
   - 
   - 
