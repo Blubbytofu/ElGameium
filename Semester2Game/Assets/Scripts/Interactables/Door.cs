@@ -63,8 +63,6 @@ public class Door : MonoBehaviour, IInteractable
 
     private void Update()
     {
-        //speed was 1 / doorSpeed no deltaTime
-        //doorSpeed was 25
         if (openStatus)
         {
             transform.position = Vector3.Lerp(transform.position, openPosition, doorSpeed * Time.deltaTime);
@@ -142,7 +140,7 @@ public class Door : MonoBehaviour, IInteractable
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.cyan;
         Gizmos.DrawWireCube(transform.position, doorDimensions);
     }
 }

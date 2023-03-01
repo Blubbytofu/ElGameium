@@ -1,5 +1,6 @@
+using PlayerObject;
 
 public interface IConsumable
 {
-    public void Consume();
+    public void Consume(PlayerInventory playerInventory, WeaponManager weaponManager);
 }

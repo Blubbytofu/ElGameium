@@ -17349,7 +17349,7 @@ MonoBehaviour:
   walkingVelMultiplier: 0.5
   maxGroundedVel: 12
   groundDrag: 5
-  groundSnapTolerance: 1
+  groundSnapTolerance: 0.4
   maxGroundAngle: 45
   groundSnapVel: 10
   gravityMagnitude: 20
@@ -17386,6 +17386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hudManager: {fileID: 353589472}
   playerCamera: {fileID: 963194229}
+  weaponManager: {fileID: 1500099746}
   <maxHealth>k__BackingField: 100
   <health>k__BackingField: 100
   <maxArmor>k__BackingField: 100

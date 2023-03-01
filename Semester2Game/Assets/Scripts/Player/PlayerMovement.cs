@@ -7,7 +7,7 @@ namespace PlayerObject
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [Header("References")]
+        [Header("References-----------------------------------------------------------------------------")]
         [SerializeField] private Rigidbody playerRb;
         [SerializeField] private Transform playerCameraTransform;
         [SerializeField] private CapsuleCollider playerCollider;
@@ -15,13 +15,13 @@ namespace PlayerObject
         [SerializeField] private Transform orientation;
         [SerializeField] private LayerMask environmentMask;
 
-        [Header("Walking")]
+        [Header("Walking-----------------------------------------------------------------------------")]
         [SerializeField] private float walkingVelMultiplier;
         public bool walkingInput { get; private set; }
         public int vInput { get; private set; }
         public int hInput { get; private set; }
 
-        [Header("Grounded")]
+        [Header("Grounded-----------------------------------------------------------------------------")]
         [SerializeField] private float maxGroundedVel;
         [SerializeField] private float groundDrag;
         [SerializeField] private float groundSnapTolerance;
@@ -29,26 +29,26 @@ namespace PlayerObject
         [SerializeField] private float groundSnapVel;
         private bool doSnapDownForce;
 
-        [Header("In The Air")]
+        [Header("In The Air-----------------------------------------------------------------------------")]
         [SerializeField] private float gravityMagnitude;
         [SerializeField] private float maxAirVel;
         [SerializeField] private float airSpeed;
         [SerializeField] private float airDrag;
         [SerializeField] private float backwardAirSpeed;
 
-        [Header("Environment Detection")]
+        [Header("Environment Detection-----------------------------------------------------------------------------")]
         [SerializeField] private float groundHitLength;
         private RaycastHit groundHit;
         [SerializeField] private bool isGrounded;
 
-        [Header("Jumping")]
+        [Header("Jumping-----------------------------------------------------------------------------")]
         [SerializeField] private float jumpForce;
         private bool jumpingUpStage;
         private bool fallingDownStage;
         private bool jumpInput;
         [SerializeField] private float fallingThreshold;
 
-        [Header("Crouching")]
+        [Header("Crouching-----------------------------------------------------------------------------")]
         [SerializeField] private float crouchHeight;
         [SerializeField] private float normalHeight;
         [SerializeField] private float groundedCrouchForce;
@@ -58,7 +58,7 @@ namespace PlayerObject
         public bool crouchInput { get; private set; }
         [SerializeField] private bool groundedCrouch;
 
-        [Header("Water")]
+        [Header("Water-----------------------------------------------------------------------------")]
         [SerializeField] private float waterDrag;
         [SerializeField] private float maxWaterVel;
         [SerializeField] private float waterDownForce;
@@ -75,7 +75,7 @@ namespace PlayerObject
             STUNNED
         }
 
-        [SerializeField] private MovementState movementState;
+        private MovementState movementState;
 
         private void Start()
         {

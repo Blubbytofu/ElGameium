@@ -6,7 +6,7 @@ namespace PlayerObject
 {
     public class PlayerCamera : MonoBehaviour
     {
-        [Header("References")]
+        [Header("References-----------------------------------------------------------------------------")]
         [SerializeField] private Transform orientation;
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform playerCamera;
@@ -19,14 +19,14 @@ namespace PlayerObject
         private float xRotation;
         private float yRotation;
 
-        [Header("Player Settings")]
+        [Header("Player Settings-----------------------------------------------------------------------------")]
         [SerializeField] private float xSensitivity = 2f;
         [SerializeField] private float ySensitivity = 2f;
         [SerializeField] private int FOV;
         [SerializeField] private int secondaryFOV;
         [HideInInspector] public float zoomFactor;
 
-        [Header("Other")]
+        [Header("Other-----------------------------------------------------------------------------")]
         [SerializeField] private float headRadius;
         public bool breathingWater { get; private set; }
         [SerializeField] private float interactRange;

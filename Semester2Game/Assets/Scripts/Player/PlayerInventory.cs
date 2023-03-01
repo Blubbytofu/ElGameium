@@ -8,12 +8,13 @@ namespace PlayerObject
     {
         [SerializeField] private HUDManager hudManager;
         [SerializeField] private PlayerCamera playerCamera;
+        [SerializeField] private WeaponManager weaponManager;
 
+        [SerializeField] private int partsHealthToArmor;
         [field: SerializeField] public int maxHealth { get; private set; }
         [field: SerializeField] public int health { get; private set; }
         [field: SerializeField] public int maxArmor { get; private set; }
         [field: SerializeField] public int armor { get; private set; }
-        [SerializeField] private int partsHealthToArmor;
 
         [field: SerializeField] public int maxOxygen { get; private set; }
         [field: SerializeField] public int oxygen { get; private set; }
@@ -97,7 +98,7 @@ namespace PlayerObject
                 IConsumable consumable = other.gameObject.GetComponent<IConsumable>();
                 if (consumable != null)
                 {
-                    consumable.Consume();
+                    consumable.Consume(this, weaponManager);
                 }
             }
         }
