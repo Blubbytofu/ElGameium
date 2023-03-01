@@ -17349,6 +17349,9 @@ MonoBehaviour:
   walkingVelMultiplier: 0.5
   maxGroundedVel: 12
   groundDrag: 5
+  groundSnapTolerance: 1
+  maxGroundAngle: 45
+  groundSnapVel: 10
   gravityMagnitude: 20
   maxAirVel: 12
   airSpeed: 1
@@ -17357,6 +17360,7 @@ MonoBehaviour:
   groundHitLength: 1
   isGrounded: 0
   jumpForce: 500
+  fallingThreshold: 3
   crouchHeight: 0.45
   normalHeight: 0.9
   groundedCrouchForce: 400

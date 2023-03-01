@@ -24,9 +24,10 @@ namespace PlayerObject
         [Header("Grounded")]
         [SerializeField] private float maxGroundedVel;
         [SerializeField] private float groundDrag;
-        //[SerializeField] private float groundSnapTolerance;
-        //[SerializeField] private int groundSnapForce;
-        //[SerializeField] int stepsSinceLastGrounded;
+        [SerializeField] private float groundSnapTolerance;
+        [SerializeField] private int maxGroundAngle;
+        [SerializeField] private float groundSnapVel;
+        private bool doSnapDownForce;
 
         [Header("In The Air")]
         [SerializeField] private float gravityMagnitude;
@@ -42,7 +43,10 @@ namespace PlayerObject
 
         [Header("Jumping")]
         [SerializeField] private float jumpForce;
+        private bool jumpingUpStage;
+        private bool fallingDownStage;
         private bool jumpInput;
+        [SerializeField] private float fallingThreshold;
 
         [Header("Crouching")]
         [SerializeField] private float crouchHeight;
@@ -81,6 +85,22 @@ namespace PlayerObject
 
         private void Update()
         {
+            if (jumpingUpStage && playerRb.velocity.y <= 0)
+            {
+                jumpingUpStage = false;
+                fallingDownStage = true;
+            }
+
+            if (fallingDownStage && isGrounded)
+            {
+                fallingDownStage = false;
+            }
+
+            if (!jumpingUpStage && playerRb.velocity.y < -fallingThreshold && !fallingDownStage)
+            {
+                fallingDownStage = true;
+            }
+
             groundHitLength = playerCollider.height * 0.5f * transform.localScale.y + 0.1f;
             isGrounded = Physics.Raycast(orientation.position, -orientation.up, out groundHit, groundHitLength);
 
@@ -91,18 +111,6 @@ namespace PlayerObject
 
         private void FixedUpdate()
         {
-            /*
-            if (stepsSinceLastGrounded < 1)
-            {
-                stepsSinceLastGrounded++;
-            }
-
-            if (isGrounded)
-            {
-                stepsSinceLastGrounded = 0;
-            }
-            */
-
             switch (movementState)
             {
                 case MovementState.GROUNDED:
@@ -149,7 +157,7 @@ namespace PlayerObject
                 return;
             }
 
-            if (isGrounded)// || OnGroundSnap())
+            if (isGrounded || OnGroundSnap())
             {
                 movementState = MovementState.GROUNDED;
             }
@@ -177,7 +185,7 @@ namespace PlayerObject
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !jumpInput && !inWater)
+            if (Input.GetKeyDown(KeyCode.Space) && !jumpInput && !inWater && isGrounded)
             {
                 jumpInput = true;
             }
@@ -265,6 +273,8 @@ namespace PlayerObject
 
         private void MoveAir()
         {
+            fallingDownStage = true;
+
             playerRb.useGravity = true;
             playerRb.drag = airDrag;
 
@@ -274,6 +284,15 @@ namespace PlayerObject
 
             Vector3 moveD = vInput * orientation.forward + hInput * orientation.right;
             moveD.Normalize();
+
+            RaycastHit groundAngleHit;
+            if (Physics.Raycast(orientation.position, -orientation.up, out groundAngleHit))
+            {
+                if (Vector3.Angle(groundAngleHit.normal, Vector3.up) >= maxGroundAngle)
+                {
+                    moveD = Vector3.zero;
+                }
+            }
 
             if (sideSpeed < maxVel)
             {
@@ -287,10 +306,9 @@ namespace PlayerObject
             //Debug.Log(sideSpeed);
         }
 
-        /*
         private bool OnGroundSnap()
         {
-            if (stepsSinceLastGrounded > 0)
+            if (jumpingUpStage || fallingDownStage || crouchInput)
             {
                 return false;
             }
@@ -298,17 +316,23 @@ namespace PlayerObject
             RaycastHit hit;
             if (Physics.Raycast(orientation.position, -orientation.up, out hit))
             {
-                float minGroundAngle = 90;
-                if (hit.distance > normalHeight - groundSnapTolerance && hit.distance < normalHeight + groundSnapTolerance && Vector3.Angle(hit.normal, Vector3.up) < minGroundAngle)
+                if (hit.distance > transform.localScale.y && hit.distance < transform.localScale.y + groundSnapTolerance && Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle)
                 {
-                    playerRb.MovePosition(new Vector3(playerRb.position.x, playerRb.position.y - (hit.distance - normalHeight), playerRb.position.z));
+                    if (!isGrounded && playerRb.velocity.y < groundSnapVel)
+                    {
+                        Debug.Log("snap");
+                        playerRb.velocity -= groundSnapVel * orientation.up;
+                    }
+                    else
+                    {
+                        playerRb.velocity = new Vector3(playerRb.velocity.x, 0, playerRb.velocity.z);
+                    }
                     return true;
                 }
             }
 
             return false;
         }
-        */
 
         private void MoveGround()
         {
@@ -336,6 +360,8 @@ namespace PlayerObject
                 jumpInput = false;
                 playerRb.velocity = playerRb.velocity.ReplaceField(newY: 0);
 
+                jumpingUpStage = true;
+
                 playerRb.AddForce(jumpForce * orientation.up, ForceMode.Impulse);
             }
         }
@@ -360,6 +386,7 @@ namespace PlayerObject
                     }
                     else if(!isGrounded)
                     {
+                        //force was 400
                         playerRb.AddForce(groundedCrouchForce * -orientation.up, ForceMode.Impulse);
                     }
                 }
