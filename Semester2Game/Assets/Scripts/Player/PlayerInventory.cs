@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PlayerObject
 {
-    public class PlayerInventory : MonoBehaviour
+    public class PlayerInventory : MonoBehaviour, IDataPersistence
     {
         [SerializeField] private HUDManager hudManager;
         [SerializeField] private PlayerCamera playerCamera;
@@ -91,7 +91,7 @@ namespace PlayerObject
             }
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerStay(Collider other)
         {
             if (!isDead)
             {
@@ -186,6 +186,18 @@ namespace PlayerObject
             {
                 TakeDamage(9999);
             }
+        }
+
+        public void LoadData(GameData data)
+        {
+            gameObject.transform.position = data.playerPosition;
+            gameObject.transform.rotation = Quaternion.Euler(data.playerRotation.x, data.playerRotation.y, data.playerRotation.z);
+        }
+
+        public void SaveData(ref GameData data)
+        {
+            data.playerPosition = gameObject.transform.position;
+            data.playerRotation = new Vector3(gameObject.transform.rotation.x, gameObject.transform.rotation.y, gameObject.transform.rotation.z);
         }
     }
 }
