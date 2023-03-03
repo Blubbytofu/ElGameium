@@ -39342,6 +39342,7 @@ MonoBehaviour:
   groundSnapTolerance: 0.4
   maxGroundAngle: 45
   groundSnapVel: 10
+  groundSnapCooldown: 0
   gravityMagnitude: 20
   maxAirVel: 12
   airSpeed: 1
@@ -39361,6 +39362,8 @@ MonoBehaviour:
   waterDrag: 4
   maxWaterVel: 6
   waterDownForce: 5
+  maxLadderVel: 0
+  ladderDrag: 0
 --- !u!114 &8261380307373194707
 MonoBehaviour:
   m_ObjectHideFlags: 0

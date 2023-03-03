@@ -27,7 +27,8 @@ namespace PlayerObject
         [SerializeField] private float groundSnapTolerance;
         [SerializeField] private int maxGroundAngle;
         [SerializeField] private float groundSnapVel;
-        private bool doSnapDownForce;
+        [SerializeField] private float groundSnapCooldown;
+        private bool doGroundSnapCooldown;
 
         [Header("In The Air-----------------------------------------------------------------------------")]
         [SerializeField] private float gravityMagnitude;
@@ -65,6 +66,12 @@ namespace PlayerObject
         public bool inWater { get; private set; }
         private int upwardsInput;
 
+        [Header("Ladder-----------------------------------------------------------------------------")]
+        [SerializeField] private float maxLadderVel;
+        [SerializeField] private float ladderDrag;
+        private Vector3 ladderDirection;
+        private bool onLadder;
+
         private enum MovementState
         {
             GROUNDED,
@@ -85,26 +92,12 @@ namespace PlayerObject
 
         private void Update()
         {
-            if (jumpingUpStage && playerRb.velocity.y <= 0)
-            {
-                jumpingUpStage = false;
-                fallingDownStage = true;
-            }
-
-            if (fallingDownStage && isGrounded)
-            {
-                fallingDownStage = false;
-            }
-
-            if (!jumpingUpStage && playerRb.velocity.y < -fallingThreshold && !fallingDownStage)
-            {
-                fallingDownStage = true;
-            }
-
             groundHitLength = playerCollider.height * 0.5f * transform.localScale.y + 0.1f;
-            isGrounded = Physics.Raycast(orientation.position, -orientation.up, out groundHit, groundHitLength);
+            isGrounded = Physics.Raycast(orientation.position, -orientation.up, out groundHit, groundHitLength, environmentMask);
 
             GetInput();
+
+            DetermineJumpState();
 
             DetermineMovementState();
         }
@@ -123,17 +116,38 @@ namespace PlayerObject
                     Crouching();
                     break;
                 case MovementState.LADDER:
+                    //MoveLadder();
                     break;
                 case MovementState.WATER:
                     MoveWater();
                     Crouching();
+                    break;
+                case MovementState.NOCLIP:
                     break;
                 case MovementState.STUNNED:
                     break;
             }
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionStay(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Ladder"))
+            {
+                onLadder = true;
+                ladderDirection = collision.gameObject.transform.position.ReplaceField(newY: orientation.position.y) - orientation.position;
+                ladderDirection.Normalize();
+            }
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Ladder"))
+            {
+                onLadder = false;
+            }
+        }
+
+        private void OnTriggerStay(Collider other)
         {
             if (other.gameObject.CompareTag("Water"))
             {
@@ -149,15 +163,36 @@ namespace PlayerObject
             }
         }
 
+        private void DetermineJumpState()
+        {
+            if (jumpingUpStage && playerRb.velocity.y <= 0)
+            {
+                jumpingUpStage = false;
+                fallingDownStage = true;
+            }
+
+            if (fallingDownStage && isGrounded)
+            {
+                fallingDownStage = false;
+            }
+
+            if (!jumpingUpStage && playerRb.velocity.y < -fallingThreshold && !fallingDownStage)
+            {
+                fallingDownStage = true;
+            }
+        }
+
         private void DetermineMovementState()
         {
             if (inWater)
             {
                 movementState = MovementState.WATER;
-                return;
             }
-
-            if (isGrounded || OnGroundSnap())
+            else if (onLadder)
+            {
+                movementState = MovementState.LADDER;
+            }
+            else if (isGrounded || OnGroundSnap())
             {
                 movementState = MovementState.GROUNDED;
             }
@@ -190,11 +225,16 @@ namespace PlayerObject
                 jumpInput = true;
             }
 
-            if (Input.GetKey(KeyCode.Space) && !jumpInput && groundedCrouch)
+            if (Input.GetKey(KeyCode.Space) && !jumpInput && groundedCrouch && !inWater)
             {
                 groundedCrouch = false;
                 jumpInput = true;
                 Jumping();
+            }
+
+            if (Input.GetKey(KeyCode.Space) && OnGroundSnap() && !inWater)
+            {
+                jumpInput = true;
             }
 
             if (Input.GetKey(KeyCode.LeftShift) && !crouchInput && !inWater)
@@ -206,7 +246,7 @@ namespace PlayerObject
                 walkingInput = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftControl))
+            if (Input.GetKeyDown(KeyCode.LeftControl) && !inWater)
             {
                 if (isGrounded)
                 {
@@ -216,7 +256,7 @@ namespace PlayerObject
                 crouchInput = true;
             }
 
-            if (!Input.GetKey(KeyCode.LeftControl))
+            if (!Input.GetKey(KeyCode.LeftControl) && !inWater)
             {
                 if (!Physics.CheckSphere(orientation.position + normalHeight * orientation.up, headClearanceRadius, environmentMask))
                 {
@@ -250,6 +290,28 @@ namespace PlayerObject
             {
                 hInput = 0;
             }
+        }
+
+        private void MoveLadder()
+        {
+            playerRb.useGravity = false;
+            playerRb.drag = ladderDrag;
+
+            RaycastHit ladderHit;
+            Physics.Raycast(orientation.position, ladderDirection, out ladderHit);
+
+            Vector3 moveD = vInput * orientation.up + hInput * orientation.right;
+            moveD.Normalize();
+
+            if (playerRb.velocity.magnitude < maxLadderVel)
+            {
+                playerRb.velocity += (maxLadderVel - playerRb.velocity.magnitude) * moveD;
+            }
+        }
+
+        private void LadderJump()
+        {
+
         }
 
         private void MoveWater()
@@ -302,36 +364,54 @@ namespace PlayerObject
             {
                 playerRb.AddForce(backwardAirSpeed * -moveD, ForceMode.Impulse);
             }
-
-            //Debug.Log(sideSpeed);
         }
 
         private bool OnGroundSnap()
         {
-            if (jumpingUpStage || fallingDownStage || crouchInput)
+            if (jumpingUpStage || fallingDownStage || crouchInput || inWater || onLadder)
+            {
+                return false;
+            }
+
+            if (doGroundSnapCooldown)
             {
                 return false;
             }
 
             RaycastHit hit;
-            if (Physics.Raycast(orientation.position, -orientation.up, out hit))
+            if (Physics.Raycast(orientation.position, -orientation.up, out hit, transform.localScale.y + 0.5f))
+            {
+                //abort if over water
+                if (hit.transform.CompareTag("Water"))
+                {
+                    return false;
+                }
+            }
+
+            if (Physics.Raycast(orientation.position, -orientation.up, out hit, environmentMask))
             {
                 if (hit.distance > transform.localScale.y && hit.distance < transform.localScale.y + groundSnapTolerance && Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle)
                 {
                     if (!isGrounded && playerRb.velocity.y < groundSnapVel)
                     {
-                        Debug.Log("snap");
                         playerRb.velocity -= groundSnapVel * orientation.up;
                     }
                     else
                     {
                         playerRb.velocity = new Vector3(playerRb.velocity.x, 0, playerRb.velocity.z);
                     }
+                    doGroundSnapCooldown = true;
+                    Invoke(nameof(ResetGroundSnap), groundSnapCooldown);
                     return true;
                 }
             }
 
             return false;
+        }
+
+        private void ResetGroundSnap()
+        {
+            doGroundSnapCooldown = false;
         }
 
         private void MoveGround()
@@ -349,8 +429,6 @@ namespace PlayerObject
             {
                 playerRb.velocity += (maxVel - playerRb.velocity.magnitude) * moveD;
             }
-
-            //Debug.Log(playerRb.velocity.magnitude);
         }
 
         private void Jumping()
@@ -370,6 +448,7 @@ namespace PlayerObject
         {
             if (inWater)
             {
+                crouchInput = false;
                 playerCollider.height = Mathf.Lerp(playerCollider.height, 2, crouchLerpSpeed * Time.deltaTime);
                 cameraPosition.localPosition = cameraPosition.localPosition.ReplaceField(newY: Mathf.Lerp(cameraPosition.localPosition.y, 0.67f, crouchLerpSpeed * Time.deltaTime));
             }
@@ -386,7 +465,6 @@ namespace PlayerObject
                     }
                     else if(!isGrounded)
                     {
-                        //force was 400
                         playerRb.AddForce(groundedCrouchForce * -orientation.up, ForceMode.Impulse);
                     }
                 }
