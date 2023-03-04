@@ -69,8 +69,14 @@ namespace PlayerObject
         [Header("Ladder-----------------------------------------------------------------------------")]
         [SerializeField] private float maxLadderVel;
         [SerializeField] private float ladderDrag;
+        [SerializeField] private float ladderLeaveForce;
+        [SerializeField] private float ladderJumpForce;
+        [SerializeField] private float ladderFirstMoveDelay;
+        private bool ladderCanMove;
+        private bool ladderJumpInput;
         private Vector3 ladderDirection;
         private bool onLadder;
+        private bool ladderLeave;
 
         private enum MovementState
         {
@@ -116,7 +122,9 @@ namespace PlayerObject
                     Crouching();
                     break;
                 case MovementState.LADDER:
-                    //MoveLadder();
+                    MoveLadder();
+                    LadderJump();
+                    Crouching();
                     break;
                 case MovementState.WATER:
                     MoveWater();
@@ -129,6 +137,17 @@ namespace PlayerObject
             }
         }
 
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Ladder"))
+            {
+                playerRb.velocity = Vector3.zero;
+                ladderLeave = true;
+                ladderCanMove = false;
+                Invoke(nameof(StartLadderMove), ladderFirstMoveDelay);
+            }
+        }
+
         private void OnCollisionStay(Collision collision)
         {
             if (collision.gameObject.CompareTag("Ladder"))
@@ -136,6 +155,7 @@ namespace PlayerObject
                 onLadder = true;
                 ladderDirection = collision.gameObject.transform.position.ReplaceField(newY: orientation.position.y) - orientation.position;
                 ladderDirection.Normalize();
+                //ladderDirection returns without vertical component
             }
         }
 
@@ -220,6 +240,11 @@ namespace PlayerObject
                 }
             }
 
+            if (Input.GetKeyDown(KeyCode.Space) && onLadder && !ladderJumpInput && ladderCanMove)
+            {
+                ladderJumpInput = true;
+            }
+
             if (Input.GetKeyDown(KeyCode.Space) && !jumpInput && !inWater && isGrounded)
             {
                 jumpInput = true;
@@ -292,15 +317,66 @@ namespace PlayerObject
             }
         }
 
+        private void StartLadderMove()
+        {
+            ladderCanMove = true;
+        }
+
         private void MoveLadder()
         {
+            if (!ladderCanMove)
+            {
+                return;
+            }
+
             playerRb.useGravity = false;
             playerRb.drag = ladderDrag;
 
-            RaycastHit ladderHit;
-            Physics.Raycast(orientation.position, ladderDirection, out ladderHit);
+            float ladderAngle = Vector3.SignedAngle(ladderDirection, orientation.forward, orientation.up);
 
-            Vector3 moveD = vInput * orientation.up + hInput * orientation.right;
+            Vector3 moveD;
+            if (ladderAngle >= -45f && ladderAngle <= 45f)
+            {
+                //ladder to the front
+                moveD = vInput * orientation.up + hInput * orientation.right;
+                if (isGrounded && vInput == -1 && ladderLeave)
+                {
+                    ladderLeave = false;
+                    playerRb.AddForce(-ladderLeaveForce * ladderDirection, ForceMode.Impulse);
+                    Debug.Log("Leave " + Time.time);
+                }
+            }
+            else if (ladderAngle > 45f && ladderAngle < 135f)
+            {
+                //to the left
+                moveD = -hInput * orientation.up + vInput * orientation.right;
+                if (isGrounded && hInput == 1 && ladderLeave)
+                {
+                    ladderLeave = false;
+                    playerRb.AddForce(-ladderLeaveForce * ladderDirection, ForceMode.Impulse);
+                }
+            }
+            else if (ladderAngle > -135f && ladderAngle < -45f)
+            {
+                //right
+                moveD = hInput * orientation.up + vInput * orientation.right;
+                if (isGrounded && hInput == -1 && ladderLeave)
+                {
+                    ladderLeave = false;
+                    playerRb.AddForce(-ladderLeaveForce * ladderDirection, ForceMode.Impulse);
+                }
+            }
+            else
+            {
+                //behind
+                moveD = -vInput * orientation.up + hInput * orientation.right;
+                if (isGrounded && vInput == 1 && ladderLeave)
+                {
+                    ladderLeave = false;
+                    playerRb.AddForce(-ladderLeaveForce * ladderDirection, ForceMode.Impulse);
+                }
+            }
+
             moveD.Normalize();
 
             if (playerRb.velocity.magnitude < maxLadderVel)
@@ -311,7 +387,14 @@ namespace PlayerObject
 
         private void LadderJump()
         {
+            if (ladderJumpInput)
+            {
+                ladderJumpInput = false;
 
+                playerRb.velocity = playerRb.velocity.ReplaceField(newY: 0);
+
+                playerRb.AddForce(-ladderJumpForce * ladderDirection, ForceMode.Impulse);
+            }
         }
 
         private void MoveWater()
@@ -446,7 +529,7 @@ namespace PlayerObject
 
         private void Crouching()
         {
-            if (inWater)
+            if (inWater || onLadder)
             {
                 crouchInput = false;
                 playerCollider.height = Mathf.Lerp(playerCollider.height, 2, crouchLerpSpeed * Time.deltaTime);

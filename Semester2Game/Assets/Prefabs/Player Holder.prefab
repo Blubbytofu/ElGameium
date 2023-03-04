@@ -39364,6 +39364,9 @@ MonoBehaviour:
   waterDownForce: 5
   maxLadderVel: 0
   ladderDrag: 0
+  ladderLeaveForce: 0
+  ladderJumpForce: 0
+  ladderFirstMoveDelay: 0
 --- !u!114 &8261380307373194707
 MonoBehaviour:
   m_ObjectHideFlags: 0
