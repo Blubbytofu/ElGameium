@@ -299,6 +299,17 @@ namespace PlayerObject
             }
         }
 
+        public void MaxAmmo()
+        {
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                if (weapons[i].GetComponent<Weapon>().owned && weaponCurrentAmmo[i] < weaponMaxAmmo[i])
+                {
+                    weaponCurrentAmmo[i] = weaponMaxAmmo[i];
+                }
+            }
+        }
+
         public int GetCurrentAmmo(int weaponIndex)
         {
             return weaponCurrentAmmo[weaponIndex];

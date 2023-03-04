@@ -9,14 +9,16 @@ namespace PlayerObject
     {
         [Header("References-----------------------------------------------------------------------------")]
         [SerializeField] private Rigidbody playerRb;
+        [SerializeField] private PlayerCamera playerCameraScript;
         [SerializeField] private Transform playerCameraTransform;
         [SerializeField] private CapsuleCollider playerCollider;
-        [SerializeField] private Transform cameraPosition;
-        [SerializeField] private Transform orientation;
+        [SerializeField] private Transform cameraTransform;
+        [SerializeField] private Transform orientationTransform;
         [SerializeField] private LayerMask environmentMask;
 
         [Header("Walking-----------------------------------------------------------------------------")]
         [SerializeField] private float walkingVelMultiplier;
+        [SerializeField] private bool shiftToWalk;
         public bool walkingInput { get; private set; }
         public int vInput { get; private set; }
         public int hInput { get; private set; }
@@ -56,8 +58,8 @@ namespace PlayerObject
         [SerializeField] private float crouchSpeedMultiplier;
         [SerializeField] private float crouchLerpSpeed;
         [SerializeField] private float headClearanceRadius;
+        private bool groundedCrouch;
         public bool crouchInput { get; private set; }
-        [SerializeField] private bool groundedCrouch;
 
         [Header("Water-----------------------------------------------------------------------------")]
         [SerializeField] private float waterDrag;
@@ -99,7 +101,7 @@ namespace PlayerObject
         private void Update()
         {
             groundHitLength = playerCollider.height * 0.5f * transform.localScale.y + 0.1f;
-            isGrounded = Physics.Raycast(orientation.position, -orientation.up, out groundHit, groundHitLength, environmentMask);
+            isGrounded = Physics.Raycast(orientationTransform.position, -orientationTransform.up, out groundHit, groundHitLength, environmentMask);
 
             GetInput();
 
@@ -153,7 +155,7 @@ namespace PlayerObject
             if (collision.gameObject.CompareTag("Ladder"))
             {
                 onLadder = true;
-                ladderDirection = collision.gameObject.transform.position.ReplaceField(newY: orientation.position.y) - orientation.position;
+                ladderDirection = collision.gameObject.transform.position.ReplaceField(newY: orientationTransform.position.y) - orientationTransform.position;
                 ladderDirection.Normalize();
                 //ladderDirection returns without vertical component
             }
@@ -264,11 +266,11 @@ namespace PlayerObject
 
             if (Input.GetKey(KeyCode.LeftShift) && !crouchInput && !inWater)
             {
-                walkingInput = true;
+                walkingInput = shiftToWalk ? true : false;
             }
             else
             {
-                walkingInput = false;
+                walkingInput = shiftToWalk ? false : true;
             }
 
             if (Input.GetKeyDown(KeyCode.LeftControl) && !inWater)
@@ -283,7 +285,7 @@ namespace PlayerObject
 
             if (!Input.GetKey(KeyCode.LeftControl) && !inWater)
             {
-                if (!Physics.CheckSphere(orientation.position + normalHeight * orientation.up, headClearanceRadius, environmentMask))
+                if (!Physics.CheckSphere(orientationTransform.position + normalHeight * orientationTransform.up, headClearanceRadius, environmentMask))
                 {
                     crouchInput = false;
                     groundedCrouch = false;
@@ -332,13 +334,13 @@ namespace PlayerObject
             playerRb.useGravity = false;
             playerRb.drag = ladderDrag;
 
-            float ladderAngle = Vector3.SignedAngle(ladderDirection, orientation.forward, orientation.up);
+            float ladderAngle = Vector3.SignedAngle(ladderDirection, orientationTransform.forward, orientationTransform.up);
 
             Vector3 moveD;
             if (ladderAngle >= -45f && ladderAngle <= 45f)
             {
                 //ladder to the front
-                moveD = vInput * orientation.up + hInput * orientation.right;
+                moveD = vInput * orientationTransform.up + hInput * orientationTransform.right;
                 if (isGrounded && vInput == -1 && ladderLeave)
                 {
                     ladderLeave = false;
@@ -349,7 +351,7 @@ namespace PlayerObject
             else if (ladderAngle > 45f && ladderAngle < 135f)
             {
                 //to the left
-                moveD = -hInput * orientation.up + vInput * orientation.right;
+                moveD = -hInput * orientationTransform.up + vInput * orientationTransform.right;
                 if (isGrounded && hInput == 1 && ladderLeave)
                 {
                     ladderLeave = false;
@@ -359,7 +361,7 @@ namespace PlayerObject
             else if (ladderAngle > -135f && ladderAngle < -45f)
             {
                 //right
-                moveD = hInput * orientation.up + vInput * orientation.right;
+                moveD = hInput * orientationTransform.up + vInput * orientationTransform.right;
                 if (isGrounded && hInput == -1 && ladderLeave)
                 {
                     ladderLeave = false;
@@ -369,7 +371,7 @@ namespace PlayerObject
             else
             {
                 //behind
-                moveD = -vInput * orientation.up + hInput * orientation.right;
+                moveD = -vInput * orientationTransform.up + hInput * orientationTransform.right;
                 if (isGrounded && vInput == 1 && ladderLeave)
                 {
                     ladderLeave = false;
@@ -402,7 +404,7 @@ namespace PlayerObject
             playerRb.useGravity = false;
             playerRb.drag = waterDrag;
 
-            Vector3 moveD = vInput * playerCameraTransform.forward + hInput * playerCameraTransform.right + upwardsInput * orientation.up;
+            Vector3 moveD = vInput * playerCameraTransform.forward + hInput * playerCameraTransform.right + upwardsInput * orientationTransform.up;
             moveD.Normalize();
 
             if (playerRb.velocity.magnitude < maxWaterVel)
@@ -412,7 +414,7 @@ namespace PlayerObject
 
             if (hInput == 0 && vInput == 0 && upwardsInput == 0)
             {
-                playerRb.AddForce(-waterDownForce * orientation.up, ForceMode.Acceleration);
+                playerRb.AddForce(-waterDownForce * orientationTransform.up, ForceMode.Acceleration);
             }
         }
 
@@ -424,14 +426,13 @@ namespace PlayerObject
             playerRb.drag = airDrag;
 
             float sideSpeed = Mathf.Sqrt(playerRb.velocity.x * playerRb.velocity.x + playerRb.velocity.z * playerRb.velocity.z);
-
             float maxVel = walkingInput ? maxAirVel * walkingVelMultiplier : (crouchInput ? maxAirVel * crouchSpeedMultiplier : maxAirVel);
 
-            Vector3 moveD = vInput * orientation.forward + hInput * orientation.right;
+            Vector3 moveD = vInput * orientationTransform.forward + hInput * orientationTransform.right;
             moveD.Normalize();
 
             RaycastHit groundAngleHit;
-            if (Physics.Raycast(orientation.position, -orientation.up, out groundAngleHit))
+            if (Physics.Raycast(orientationTransform.position, -orientationTransform.up, out groundAngleHit))
             {
                 if (Vector3.Angle(groundAngleHit.normal, Vector3.up) >= maxGroundAngle)
                 {
@@ -462,7 +463,7 @@ namespace PlayerObject
             }
 
             RaycastHit hit;
-            if (Physics.Raycast(orientation.position, -orientation.up, out hit, transform.localScale.y + 0.5f))
+            if (Physics.Raycast(orientationTransform.position, -orientationTransform.up, out hit, transform.localScale.y + 0.5f))
             {
                 //abort if over water
                 if (hit.transform.CompareTag("Water"))
@@ -471,13 +472,13 @@ namespace PlayerObject
                 }
             }
 
-            if (Physics.Raycast(orientation.position, -orientation.up, out hit, environmentMask))
+            if (Physics.Raycast(orientationTransform.position, -orientationTransform.up, out hit, environmentMask))
             {
                 if (hit.distance > transform.localScale.y && hit.distance < transform.localScale.y + groundSnapTolerance && Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle)
                 {
                     if (!isGrounded && playerRb.velocity.y < groundSnapVel)
                     {
-                        playerRb.velocity -= groundSnapVel * orientation.up;
+                        playerRb.velocity -= groundSnapVel * orientationTransform.up;
                     }
                     else
                     {
@@ -502,7 +503,7 @@ namespace PlayerObject
             playerRb.useGravity = false;
             playerRb.drag = groundDrag;
 
-            Vector3 moveD = vInput * orientation.forward + hInput * orientation.right;
+            Vector3 moveD = vInput * orientationTransform.forward + hInput * orientationTransform.right;
             moveD = Vector3.ProjectOnPlane(moveD, groundHit.normal);
             moveD.Normalize();
 
@@ -523,22 +524,22 @@ namespace PlayerObject
 
                 jumpingUpStage = true;
 
-                playerRb.AddForce(jumpForce * orientation.up, ForceMode.Impulse);
+                playerRb.AddForce(jumpForce * orientationTransform.up, ForceMode.Impulse);
             }
         }
 
         private void Crouching()
         {
-            if (inWater || onLadder)
+            if (onLadder || inWater)
             {
                 crouchInput = false;
                 playerCollider.height = Mathf.Lerp(playerCollider.height, 2, crouchLerpSpeed * Time.deltaTime);
-                cameraPosition.localPosition = cameraPosition.localPosition.ReplaceField(newY: Mathf.Lerp(cameraPosition.localPosition.y, 0.67f, crouchLerpSpeed * Time.deltaTime));
+                cameraTransform.localPosition = cameraTransform.localPosition.ReplaceField(newY: Mathf.Lerp(cameraTransform.localPosition.y, 0.67f, crouchLerpSpeed * Time.deltaTime));
             }
             else if (crouchInput)
             {
                 playerCollider.height = Mathf.Lerp(playerCollider.height, 1, crouchLerpSpeed * Time.deltaTime);
-                cameraPosition.localPosition = cameraPosition.localPosition.ReplaceField(newY: Mathf.Lerp(cameraPosition.localPosition.y, 0.22f, crouchLerpSpeed * Time.deltaTime));
+                cameraTransform.localPosition = cameraTransform.localPosition.ReplaceField(newY: Mathf.Lerp(cameraTransform.localPosition.y, 0.22f, crouchLerpSpeed * Time.deltaTime));
 
                 if (groundedCrouch)
                 {
@@ -548,29 +549,29 @@ namespace PlayerObject
                     }
                     else if(!isGrounded)
                     {
-                        playerRb.AddForce(groundedCrouchForce * -orientation.up, ForceMode.Impulse);
+                        playerRb.AddForce(groundedCrouchForce * -orientationTransform.up, ForceMode.Impulse);
                     }
                 }
             }
             else
             {
                 playerCollider.height = Mathf.Lerp(playerCollider.height, 2, crouchLerpSpeed * Time.deltaTime);
-                cameraPosition.localPosition = cameraPosition.localPosition.ReplaceField(newY: Mathf.Lerp(cameraPosition.localPosition.y, 0.67f, crouchLerpSpeed * Time.deltaTime));
+                cameraTransform.localPosition = cameraTransform.localPosition.ReplaceField(newY: Mathf.Lerp(cameraTransform.localPosition.y, 0.67f, crouchLerpSpeed * Time.deltaTime));
             }
         }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(orientation.position, orientation.position - new Vector3(0, groundHitLength, 0));
-            Gizmos.DrawWireSphere(orientation.position + normalHeight * orientation.up, headClearanceRadius);
+            Gizmos.DrawLine(orientationTransform.position, orientationTransform.position - new Vector3(0, groundHitLength, 0));
+            Gizmos.DrawWireSphere(orientationTransform.position + normalHeight * orientationTransform.up, headClearanceRadius);
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(orientation.position + (normalHeight - headClearanceRadius) * 0.5f * playerCollider.height * orientation.up, headClearanceRadius);
-            Gizmos.DrawWireSphere(orientation.position - (normalHeight - headClearanceRadius) * 0.5f * playerCollider.height * orientation.up, headClearanceRadius);
+            Gizmos.DrawWireSphere(orientationTransform.position + (normalHeight - headClearanceRadius) * 0.5f * playerCollider.height * orientationTransform.up, headClearanceRadius);
+            Gizmos.DrawWireSphere(orientationTransform.position - (normalHeight - headClearanceRadius) * 0.5f * playerCollider.height * orientationTransform.up, headClearanceRadius);
         }
     }
 }

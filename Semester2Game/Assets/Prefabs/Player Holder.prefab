@@ -39339,14 +39339,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRb: {fileID: 8261380307373194704}
+  playerCameraScript: {fileID: 0}
   playerCameraTransform: {fileID: 8261380307274702180}
   playerCollider: {fileID: 8261380307373194668}
-  cameraPosition: {fileID: 8261380307006042368}
-  orientation: {fileID: 8261380306796332257}
+  cameraTransform: {fileID: 0}
+  orientationTransform: {fileID: 0}
   environmentMask:
     serializedVersion: 2
     m_Bits: 64
   walkingVelMultiplier: 0.5
+  shiftToWalk: 0
   maxGroundedVel: 12
   groundDrag: 5
   groundSnapTolerance: 0.4
@@ -39368,7 +39370,6 @@ MonoBehaviour:
   crouchSpeedMultiplier: 0.4
   crouchLerpSpeed: 30
   headClearanceRadius: 0.35
-  groundedCrouch: 0
   waterDrag: 4
   maxWaterVel: 6
   waterDownForce: 5

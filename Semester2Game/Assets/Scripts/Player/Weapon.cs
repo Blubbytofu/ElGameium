@@ -157,6 +157,11 @@ namespace PlayerObject
                 ShootInput();
             }
 
+            if (shotgunReload && isReloading && !queuedStop && shooting)
+            {
+                queuedStop = true;
+            }
+
             if ((currentMagSize == 0 || Input.GetKeyDown(KeyCode.R)) && (hasMag && currentMagSize < maxMagSize && weaponManager.GetCurrentAmmo(weaponIndex) > 0 && !isReloading && currentBurst < 1))
             {
                 if (isChildWeapon && weaponManager.GetCurrentAmmo(weaponIndex) == 1)

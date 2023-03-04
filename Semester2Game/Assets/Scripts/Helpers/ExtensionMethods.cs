@@ -12,7 +12,7 @@ namespace ExtensionMethods
 
         //checks if a gameObject has the component given and returns true
         public static bool HasComponent<T>(this GameObject obj)
-        where T : Component, IDamageable, IConsumable, IInteractable
+        where T : Component
         {
             return obj.GetComponent<T>() != null;
         }

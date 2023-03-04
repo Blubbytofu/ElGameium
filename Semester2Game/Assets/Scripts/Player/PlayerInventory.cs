@@ -44,7 +44,7 @@ namespace PlayerObject
 
         private void ManageOxygen()
         {
-            if (playerCamera.breathingWater)
+            if (playerCamera.GetBreathingWater())
             {
                 hudManager.ToggleOxygenMonitor(true);
             }
@@ -63,7 +63,7 @@ namespace PlayerObject
             if (Time.time > lastOxygenTime + oxygenDetectIntervals)
             {
                 lastOxygenTime = Time.time;
-                if (playerCamera.breathingWater)
+                if (playerCamera.GetBreathingWater())
                 {
                     ChangeOxygen(-oxygenDecreaseAmount);
                 }
@@ -76,7 +76,7 @@ namespace PlayerObject
 
         private void OffOxygenText()
         {
-            if (!playerCamera.breathingWater)
+            if (!playerCamera.GetBreathingWater())
             {
                 hudManager.ToggleOxygenMonitor(false);
             }

@@ -28,7 +28,7 @@ namespace PlayerObject
 
         [Header("Other-----------------------------------------------------------------------------")]
         [SerializeField] private float headRadius;
-        public bool breathingWater { get; private set; }
+        private bool breathingWater;
         [SerializeField] private float interactRange;
 
         private void Start()
@@ -78,7 +78,7 @@ namespace PlayerObject
                     IInteractable interactable = interactHit.transform.gameObject.GetComponent<IInteractable>();
                     if (interactable != null)
                     {
-                        interactable.Interact();
+                        interactable.Interact(gameObject);
                     }
                 }
             }
@@ -117,6 +117,12 @@ namespace PlayerObject
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, headRadius);
+        }
+
+        //accessors
+        public bool GetBreathingWater()
+        {
+            return breathingWater;
         }
     }
 }

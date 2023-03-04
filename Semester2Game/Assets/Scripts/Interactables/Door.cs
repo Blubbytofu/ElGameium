@@ -5,9 +5,11 @@ using UnityEngine;
 public class Door : MonoBehaviour, IInteractable
 {
     [SerializeField] private bool broken;
+    [SerializeField] private bool cannotBeDirectlyOpenedByPlayer;
     [SerializeField] private bool openStatus;
     [SerializeField] private bool obstruction;
     [SerializeField] private bool readyToMove;
+    [SerializeField] private bool autoClosing;
 
     [SerializeField] private float doorSpeed;
     private Vector3 closedPosition;
@@ -92,14 +94,19 @@ public class Door : MonoBehaviour, IInteractable
             readyToMove = false;
         }
 
-        if (Time.time > startOpenTime + totalOpenTime && openStatus)
+        if (autoClosing && Time.time > startOpenTime + totalOpenTime && openStatus)
         {
-            Interact();
+            Interact(gameObject);
         }
     }
 
-    public void Interact()
+    public void Interact(GameObject source)
     {
+        if (cannotBeDirectlyOpenedByPlayer && source.CompareTag("MainCamera"))
+        {
+            return;
+        }
+
         if (!broken && readyToMove)// && !redLocked && !blueLocked)
         {
             if ((openStatus && !obstruction) || !openStatus)
