@@ -8037,6 +8037,8 @@ MonoBehaviour:
   isChildWeapon: 0
   parentWeapon: {fileID: 0}
   activeSecondary: 0
+  queueShotProperty: 0
+  queueInterval: 0
 --- !u!114 &8261380305962738636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8193,6 +8195,8 @@ MonoBehaviour:
   isChildWeapon: 0
   parentWeapon: {fileID: 0}
   activeSecondary: 0
+  queueShotProperty: 0
+  queueInterval: 0
 --- !u!1 &5696823773288349142
 GameObject:
   m_ObjectHideFlags: 0
@@ -9804,6 +9808,8 @@ MonoBehaviour:
   isChildWeapon: 1
   parentWeapon: {fileID: 8261380307011553506}
   activeSecondary: 0
+  queueShotProperty: 0
+  queueInterval: 0
 --- !u!1 &6407684428267804742
 GameObject:
   m_ObjectHideFlags: 0
@@ -9938,6 +9944,8 @@ MonoBehaviour:
   isChildWeapon: 0
   parentWeapon: {fileID: 0}
   activeSecondary: 0
+  queueShotProperty: 0
+  queueInterval: 0
 --- !u!114 &8261380307011553507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33510,6 +33518,8 @@ MonoBehaviour:
   isChildWeapon: 0
   parentWeapon: {fileID: 0}
   activeSecondary: 0
+  queueShotProperty: 0
+  queueInterval: 0
 --- !u!1 &8261380306764658475
 GameObject:
   m_ObjectHideFlags: 0
@@ -40820,6 +40830,8 @@ MonoBehaviour:
   isChildWeapon: 0
   parentWeapon: {fileID: 0}
   activeSecondary: 0
+  queueShotProperty: 0
+  queueInterval: 0
 --- !u!114 &8261380306194290933
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4099,9 +4099,37 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5456723734399024111, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6246541477203233483, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6246541477203233483, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0002571502
+      objectReference: {fileID: 0}
+    - target: {fileID: 7165514487752856913, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
       propertyPath: burstDelay
       value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
+      propertyPath: queueInterval
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
+      propertyPath: queueNextShot
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
+      propertyPath: queueShotProperty
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8261380307248989551, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
       propertyPath: m_Name

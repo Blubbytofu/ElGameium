@@ -101,6 +101,10 @@ namespace PlayerObject
         [SerializeField] private bool isChildWeapon;
         [SerializeField] private Weapon parentWeapon;
         public bool activeSecondary;
+        [SerializeField] private bool queueShotProperty;
+        private bool inQueueShotInterval;
+        private bool queueNextShot;
+        [SerializeField] private float queueInterval;
 
         private void Awake()
         {
@@ -113,6 +117,7 @@ namespace PlayerObject
 
         public void StartEquip()
         {
+            queueNextShot = false;
             readyToShoot = false;
             isReloading = false;
         }
@@ -142,6 +147,11 @@ namespace PlayerObject
                 shooting = singleFire ? Input.GetKeyDown(KeyCode.Mouse0) : Input.GetKey(KeyCode.Mouse0);
             }
 
+            if (queueShotProperty && inQueueShotInterval && shooting && !queueNextShot && !isReloading)
+            {
+                queueNextShot = true;
+            }
+
             if (readyToShoot && !isReloading && currentBurst < 1)
             {
                 ShootInput();
@@ -162,11 +172,6 @@ namespace PlayerObject
                 }
 
                 StartCoroutine(ReloadMag());
-            }
-
-            if (isReloading && !queuedStop && shooting)
-            {
-                queuedStop = true;
             }
 
             if (isHeatBased)
@@ -206,7 +211,7 @@ namespace PlayerObject
 
         private void ShootInput()
         {
-            if (shooting && (hasMag? currentMagSize >= bulletsSubtracted : weaponManager.GetCurrentAmmo(weaponIndex) >= bulletsSubtracted))
+            if ((shooting || queueNextShot) && (hasMag? currentMagSize >= bulletsSubtracted : weaponManager.GetCurrentAmmo(weaponIndex) >= bulletsSubtracted))
             {
                 if (isBurstFire)
                 {
@@ -218,6 +223,11 @@ namespace PlayerObject
                     {
                         currentBurst = (hasMag? currentMagSize : weaponManager.GetCurrentAmmo(weaponIndex));
                     }
+                }
+
+                if (queueNextShot)
+                {
+                    queueNextShot = false;
                 }
 
                 readyToShoot = false;
@@ -364,12 +374,28 @@ namespace PlayerObject
 
         private IEnumerator ResetShot()
         {
-            yield return new WaitForSeconds(timeBetweenShooting);
-            readyToShoot = true;
+            if (queueShotProperty)
+            {
+                yield return new WaitForSeconds(timeBetweenShooting - queueInterval);
+                inQueueShotInterval = true;
+                yield return new WaitForSeconds(queueInterval);
+                inQueueShotInterval = false;
+                readyToShoot = true;
+            }
+            else
+            {
+                yield return new WaitForSeconds(timeBetweenShooting);
+                readyToShoot = true;
+            }
         }
 
         private IEnumerator ReloadMag()
         {
+            if (queueShotProperty && queueNextShot)
+            {
+                queueNextShot = false;
+            }
+
             if (weaponAnimator != null)
             {
                 if (shotgunReload)
