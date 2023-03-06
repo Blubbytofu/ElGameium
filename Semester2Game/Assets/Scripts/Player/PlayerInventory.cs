@@ -9,6 +9,7 @@ namespace PlayerObject
         [SerializeField] private HUDManager hudManager;
         [SerializeField] private PlayerCamera playerCamera;
         [SerializeField] private WeaponManager weaponManager;
+        [SerializeField] private GameManager gameManager;
 
         [SerializeField] private int partsHealthToArmor;
         [field: SerializeField] public int maxHealth { get; private set; }
@@ -27,6 +28,7 @@ namespace PlayerObject
         [SerializeField] private int suffocationDamage;
 
         public bool isDead { get; private set; }
+        public bool wonLevel { get; private set; }
 
         private void Start()
         {
@@ -36,10 +38,12 @@ namespace PlayerObject
 
         private void Update()
         {
-            if (!isDead)
+            if (isDead || wonLevel)
             {
-                ManageOxygen();
+                return;
             }
+
+            ManageOxygen();
         }
 
         private void ManageOxygen()
@@ -91,20 +95,37 @@ namespace PlayerObject
             }
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Exit"))
+            {
+                wonLevel = true;
+                hudManager.SetGameHUDVisible(false);
+                hudManager.SetWonGameMenuVisible(true);
+            }
+        }
+
         private void OnTriggerStay(Collider other)
         {
-            if (!isDead)
+            if (isDead || wonLevel)
             {
-                IConsumable consumable = other.gameObject.GetComponent<IConsumable>();
-                if (consumable != null)
-                {
-                    consumable.Consume(this, weaponManager);
-                }
+                return;
+            }
+
+            IConsumable consumable = other.gameObject.GetComponent<IConsumable>();
+            if (consumable != null)
+            {
+                consumable.Consume(this, weaponManager);
             }
         }
 
         public void ChangeHealth(int healthChange)
         {
+            if (isDead || wonLevel)
+            {
+                return;
+            }
+
             if (health + healthChange >= maxHealth)
             {
                 health = maxHealth;
@@ -112,6 +133,9 @@ namespace PlayerObject
             else if (health + healthChange <= 0)
             {
                 health = 0;
+                isDead = true;
+                hudManager.SetGameHUDVisible(false);
+                hudManager.SetGameOverMenuVisible(true);
             }
             else
             {
@@ -123,6 +147,11 @@ namespace PlayerObject
 
         public void ChangeArmor(int armorChange)
         {
+            if (isDead || wonLevel)
+            {
+                return;
+            }
+
             if (armor + armorChange >= maxArmor)
             {
                 armor = maxArmor;
@@ -142,6 +171,11 @@ namespace PlayerObject
 
         public void ChangeOxygen(int O2Change)
         {
+            if (isDead || wonLevel)
+            {
+                return;
+            }
+
             if (oxygen + O2Change >= maxOxygen)
             {
                 oxygen = maxOxygen;
@@ -161,33 +195,43 @@ namespace PlayerObject
 
         public void TakeDamage(int damage)
         {
-            if (!isDead)
+            if (isDead || wonLevel)
             {
-                int healthDamage;
-                int armorDamage;
+                return;
+            }
 
-                healthDamage = damage / partsHealthToArmor;
-                armorDamage = damage - healthDamage;
+            int healthDamage;
+            int armorDamage;
 
-                ChangeHealth(-healthDamage);
-                ChangeArmor(-armorDamage);
+            healthDamage = damage / partsHealthToArmor;
+            armorDamage = damage - healthDamage;
 
-                if (health <= 0)
-                {
-                    isDead = true;
-                }
+            ChangeHealth(-healthDamage);
+            ChangeArmor(-armorDamage);
+
+            if (health <= 0)
+            {
+                isDead = true;
+                hudManager.SetGameHUDVisible(false);
+                hudManager.SetGameOverMenuVisible(true);
             }
         }
 
         //detects the void
         private void OnCollisionEnter(Collision collision)
         {
+            if (isDead || wonLevel)
+            {
+                return;
+            }
+
             if (collision.gameObject.CompareTag("Death"))
             {
                 TakeDamage(9999);
             }
         }
 
+        //deprecated
         public void LoadData(GameData data)
         {
             gameObject.transform.position = data.playerPosition;

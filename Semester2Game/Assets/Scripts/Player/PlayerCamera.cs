@@ -7,6 +7,7 @@ namespace PlayerObject
     public class PlayerCamera : MonoBehaviour
     {
         [Header("References-----------------------------------------------------------------------------")]
+        [SerializeField] private PlayerInventory playerInventory;
         [SerializeField] private Transform orientation;
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform playerCamera;
@@ -41,6 +42,13 @@ namespace PlayerObject
 
         private void Update()
         {
+            if (playerInventory.isDead || playerInventory.wonLevel)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                return;
+            }
+
             TryInteract();
             DetectHead();
 
@@ -50,6 +58,11 @@ namespace PlayerObject
 
         private void LateUpdate()
         {
+            if (playerInventory.isDead || playerInventory.wonLevel)
+            {
+                return;
+            }
+
             playerCamera.position = cameraPosition.position;
 
             MouseLook();
@@ -107,12 +120,6 @@ namespace PlayerObject
             xRotation -= y;
         }
 
-        public void UpdateAllFOV(int newFOV, int newSecondFOV)
-        {
-            FOV = newFOV;
-            secondaryFOV = newSecondFOV;
-        }
-
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.blue;
@@ -123,6 +130,27 @@ namespace PlayerObject
         public bool GetBreathingWater()
         {
             return breathingWater;
+        }
+
+        //mutators
+        public void SetXSens(float newX)
+        {
+            xSensitivity = newX;
+        }
+
+        public void SetYSens(float newY)
+        {
+            ySensitivity = newY;
+        }
+
+        public void SetFOV(float newFOV)
+        {
+            FOV = (int) newFOV;
+        }
+
+        public void SetSecondaryFOV(float newFOV)
+        {
+            secondaryFOV = (int) newFOV;
         }
     }
 }

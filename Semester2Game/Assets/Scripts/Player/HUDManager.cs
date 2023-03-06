@@ -7,6 +7,10 @@ namespace PlayerObject
 {
     public class HUDManager : MonoBehaviour
     {
+        [SerializeField] private GameObject gameHUD;
+        [SerializeField] private GameObject gameOverMenu;
+        [SerializeField] private GameObject gameWinMenu;
+
         [SerializeField] private TextMeshProUGUI fpsCounter;
         [SerializeField] private TextMeshProUGUI weaponNameText;
         [SerializeField] private TextMeshProUGUI ammoText;
@@ -29,6 +33,21 @@ namespace PlayerObject
                 fpsCounter.text = "FPS " + frames;
                 yield return new WaitForSeconds(1f);
             }
+        }
+
+        public void SetGameHUDVisible(bool state)
+        {
+            gameHUD.SetActive(state);
+        }
+
+        public void SetGameOverMenuVisible(bool state)
+        {
+            gameOverMenu.SetActive(state);
+        }
+
+        public void SetWonGameMenuVisible(bool state)
+        {
+            gameWinMenu.SetActive(state);
         }
 
         public void UpdateWeapon(string weaponName, int currentAmmo, int maxAmmo)

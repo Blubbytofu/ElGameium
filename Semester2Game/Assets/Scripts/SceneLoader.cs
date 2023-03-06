@@ -7,12 +7,20 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField] private GameObject loadingScreen;
-
     [SerializeField] private Slider loadingBar;
+
+    public void DeactivateObject(GameObject obj)
+    {
+        obj.SetActive(false);
+    }
 
     public void LoadNewLevel(string levelToLoad)
     {
-        loadingScreen.SetActive(true);
+        if (loadingScreen != null)
+        {
+            loadingScreen.SetActive(true);
+        }
+
         StartCoroutine(LoadLevelAsync(levelToLoad));
     }
 
@@ -20,14 +28,15 @@ public class SceneLoader : MonoBehaviour
     {
         AsyncOperation load = SceneManager.LoadSceneAsync(levelToLoad);
 
-        float progressBar;
-        while (!load.isDone)
+        if (loadingBar != null)
         {
-            progressBar = Mathf.Clamp01(load.progress / 0.9f);
-            loadingBar.value = progressBar;
-            yield return null;
+            float progressBar;
+            while (!load.isDone)
+            {
+                progressBar = Mathf.Clamp01(load.progress / 0.9f);
+                loadingBar.value = progressBar;
+                yield return null;
+            }
         }
-
-        yield return new WaitForSeconds(0.2f);
     }
 }

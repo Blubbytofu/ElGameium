@@ -6,7 +6,7 @@ namespace PlayerObject
 {
     public class WeaponManager : MonoBehaviour
     {
-        //[SerializeField] private PlayerInventory playerInventory;
+        [SerializeField] private PlayerInventory playerInventory;
         //[SerializeField] private SettingsManager settingsManager;
         [SerializeField] private HUDManager hudManager;
 
@@ -35,6 +35,11 @@ namespace PlayerObject
 
         private void Update()
         {
+            if (playerInventory.isDead || playerInventory.wonLevel)
+            {
+                return;
+            }
+
             Weapon weaponComp = weapons[weaponID].GetComponent<Weapon>();
             WeaponOverride weaponOverride = weapons[weaponID].GetComponent<WeaponOverride>();
             if (!weaponComp.isBurstFire || (weaponComp.isBurstFire && weaponComp.currentBurst < 1))

@@ -15,7 +15,7 @@ namespace PlayerObject
         [SerializeField] private ParticleSystem muzzleFlash;
         [SerializeField] private LayerMask environmentMask, enemyMask;
         [SerializeField] private Animator weaponAnimator;
-        [SerializeField] PlayerInventory playerInventory;
+        [SerializeField] private PlayerInventory playerInventory;
         [SerializeField] private WeaponManager weaponManager;
         private RaycastHit rayHit;
 
@@ -129,6 +129,11 @@ namespace PlayerObject
 
         private void Update()
         {
+            if (playerInventory.isDead || playerInventory.wonLevel)
+            {
+                return;
+            }
+
             if (isChildWeapon && !parentWeapon.isActiveAndEnabled)
             {
                 gameObject.SetActive(false);

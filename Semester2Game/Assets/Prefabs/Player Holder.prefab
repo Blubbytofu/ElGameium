@@ -1,5 +1,77 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &422589684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 422589685}
+  m_Layer: 10
+  m_Name: Game Won Menu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &422589685
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422589684}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8261380306678737100}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1046706932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1046706933}
+  m_Layer: 10
+  m_Name: Game Over Menu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1046706933
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046706932}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8261380306678737100}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &73319288604327620
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +813,47 @@ Transform:
   m_Father: {fileID: 8827106906142661419}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 183.53499, z: 0}
+--- !u!1 &402609603456186728
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 112108558214708730}
+  m_Layer: 10
+  m_Name: Game HUD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &112108558214708730
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402609603456186728}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8261380306676469936}
+  - {fileID: 8261380307128363797}
+  - {fileID: 8261380307140304243}
+  - {fileID: 8261380305855514460}
+  - {fileID: 8261380307265084605}
+  m_Father: {fileID: 8261380306678737100}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -1528, y: -540}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &414355433186406809
 GameObject:
   m_ObjectHideFlags: 0
@@ -3879,7 +3992,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2509843666872092654}
   m_LocalRotation: {x: 0, y: -0.000000119209275, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.00025715024, z: 0.0005343889}
+  m_LocalPosition: {x: 0, y: -0.0002571502, z: 0.0005343889}
   m_LocalScale: {x: 1, y: 0.99999994, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7987,7 +8100,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   weaponAnimator: {fileID: 8261380305962738637}
-  playerInventory: {fileID: 0}
+  playerInventory: {fileID: 8261380307373194707}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: Glock-17
@@ -8002,10 +8115,10 @@ MonoBehaviour:
   projectile: {fileID: 0}
   projectileZVel: 0
   projectileYVel: 0
-  initialSpread: 0.01
-  maxSpread: 0.01
+  initialSpread: 0.02
+  maxSpread: 0.02
   currentSpread: 0
-  deltaSpread: 0.01
+  deltaSpread: 0.02
   spreadDecreaseDelay: 0.1
   spreadDecreaseRate: 10
   lowerRecoilXMagnitude: -0.05
@@ -8024,7 +8137,7 @@ MonoBehaviour:
   shotgunReload: 0
   maxBulletsPerBurst: 3
   isBurstFire: 0
-  burstDelay: 0.1
+  burstDelay: 0.07
   isHeatBased: 0
   heatStartRegenDelay: 0
   regenPerTick: 0
@@ -8037,8 +8150,8 @@ MonoBehaviour:
   isChildWeapon: 0
   parentWeapon: {fileID: 0}
   activeSecondary: 0
-  queueShotProperty: 0
-  queueInterval: 0
+  queueShotProperty: 1
+  queueInterval: 0.05
 --- !u!114 &8261380305962738636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8051,6 +8164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f99b4659a5dee3a428d2dcbaa1a3e14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInventory: {fileID: 8261380307373194707}
   weapon: {fileID: 8261380305962738635}
   pCamera: {fileID: 0}
   singleFire: 1
@@ -8061,10 +8175,10 @@ MonoBehaviour:
   altBurstMode: 1
   altProjectile: 0
   affectSpread: 1
-  normalInitialSpread: 0.01
-  normalMaxSpread: 0.01
-  newInitialSpread: 0.05
-  newMaxSpread: 0.05
+  normalInitialSpread: 0.02
+  normalMaxSpread: 0.02
+  newInitialSpread: 0.04
+  newMaxSpread: 0.04
 --- !u!1 &5562725718642545478
 GameObject:
   m_ObjectHideFlags: 0
@@ -8082,7 +8196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7240857152259632432
 Transform:
   m_ObjectHideFlags: 0
@@ -8145,12 +8259,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   weaponAnimator: {fileID: 8261380305935944628}
-  playerInventory: {fileID: 0}
+  playerInventory: {fileID: 8261380307373194707}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: Spas-12
   weaponIndex: 3
-  damage: 8
+  damage: 9
   timeBetweenShooting: 0.25
   range: 40
   bulletsPerShot: 6
@@ -9758,12 +9872,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   weaponAnimator: {fileID: 8261380305840403697}
-  playerInventory: {fileID: 0}
+  playerInventory: {fileID: 8261380307373194707}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: MAC-10
   weaponIndex: 2
-  damage: 5
+  damage: 4
   timeBetweenShooting: 0.05
   range: 60
   bulletsPerShot: 1
@@ -9894,12 +10008,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   weaponAnimator: {fileID: 8261380307011553508}
-  playerInventory: {fileID: 0}
+  playerInventory: {fileID: 8261380307373194707}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: MAC-10
   weaponIndex: 2
-  damage: 5
+  damage: 4
   timeBetweenShooting: 0.05
   range: 60
   bulletsPerShot: 1
@@ -9958,6 +10072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f99b4659a5dee3a428d2dcbaa1a3e14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInventory: {fileID: 8261380307373194707}
   weapon: {fileID: 8261380307011553506}
   pCamera: {fileID: 8261380307274702179}
   singleFire: 1
@@ -12782,6 +12897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a0a5fc0051d5e4c92d9b02be74cb68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInventory: {fileID: 8261380307373194707}
   hudManager: {fileID: 8261380306678737136}
   weapons:
   - {fileID: 8261380306713181020}
@@ -12996,12 +13112,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8261380306455130821}
-  m_Father: {fileID: 8261380306678737100}
+  m_Father: {fileID: 112108558214708730}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 50, y: 44}
+  m_AnchoredPosition: {x: -719.5, y: -226.5}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8261380305855514462
@@ -28288,12 +28404,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8261380306676469903}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8261380306678737100}
+  m_Father: {fileID: 112108558214708730}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -28371,12 +28487,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8261380306676469936}
-  - {fileID: 8261380307128363797}
-  - {fileID: 8261380307140304243}
-  - {fileID: 8261380305855514460}
-  - {fileID: 8261380307265084605}
   - {fileID: 8261380307310933643}
+  - {fileID: 112108558214708730}
+  - {fileID: 1046706933}
+  - {fileID: 422589685}
   m_Father: {fileID: 8261380307248989584}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28459,6 +28573,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3278061dd6ffac24ab20dd3fef36269e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameHUD: {fileID: 402609603456186728}
+  gameOverMenu: {fileID: 1046706932}
+  gameWinMenu: {fileID: 422589684}
   fpsCounter: {fileID: 8261380307310933644}
   weaponNameText: {fileID: 8261380307128363798}
   ammoText: {fileID: 8261380306301470136}
@@ -33468,7 +33585,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   weaponAnimator: {fileID: 8261380306722523292}
-  playerInventory: {fileID: 0}
+  playerInventory: {fileID: 8261380307373194707}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: Crowbar
@@ -38548,12 +38665,12 @@ RectTransform:
   m_Children:
   - {fileID: 8261380306301470135}
   - {fileID: 8261380306025479428}
-  m_Father: {fileID: 8261380306678737100}
+  m_Father: {fileID: 112108558214708730}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -300, y: 100}
+  m_AnchoredPosition: {x: 469.5, y: -170.5}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8261380307128363799
@@ -38686,12 +38803,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8261380306018629599}
-  m_Father: {fileID: 8261380306678737100}
+  m_Father: {fileID: 112108558214708730}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -150, y: 44}
+  m_AnchoredPosition: {x: -919.5, y: -226.5}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8261380307140304245
@@ -38802,7 +38919,7 @@ GameObject:
   - component: {fileID: 8261380307248989584}
   m_Layer: 10
   m_Name: Player Holder
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38823,7 +38940,7 @@ Transform:
   - {fileID: 8261380307373194671}
   - {fileID: 8261380307274702180}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8261380307265084604
 GameObject:
@@ -38856,12 +38973,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8261380305799050756}
-  m_Father: {fileID: 8261380306678737100}
+  m_Father: {fileID: 112108558214708730}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 250, y: 44}
+  m_AnchoredPosition: {x: -519.5, y: -226.5}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8261380307265084607
@@ -39028,7 +39145,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 631
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -39060,6 +39177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7cc341a089dd07488825c2def228883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInventory: {fileID: 8261380307373194707}
   orientation: {fileID: 8261380306796332257}
   cameraPosition: {fileID: 8261380307006042368}
   playerCamera: {fileID: 8261380307274702180}
@@ -39224,7 +39342,7 @@ GameObject:
   - component: {fileID: 8261380307373194707}
   m_Layer: 10
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39339,22 +39457,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRb: {fileID: 8261380307373194704}
-  playerCameraScript: {fileID: 0}
+  playerCameraScript: {fileID: 8261380307274702181}
   playerCameraTransform: {fileID: 8261380307274702180}
   playerCollider: {fileID: 8261380307373194668}
-  cameraTransform: {fileID: 0}
-  orientationTransform: {fileID: 0}
+  cameraTransform: {fileID: 8261380307006042368}
+  orientationTransform: {fileID: 8261380306796332257}
+  playerInventory: {fileID: 8261380307373194707}
   environmentMask:
     serializedVersion: 2
     m_Bits: 64
-  walkingVelMultiplier: 0.5
-  shiftToWalk: 0
-  maxGroundedVel: 12
-  groundDrag: 5
-  groundSnapTolerance: 0.4
+  walkingVelMultiplier: 0.6
+  shiftToWalk: 1
+  maxGroundedVel: 11
+  groundDrag: 7
+  groundSnapTolerance: 0.2
   maxGroundAngle: 45
-  groundSnapVel: 10
-  groundSnapCooldown: 0
+  groundSnapVel: 7
+  groundSnapCooldown: 0.05
   gravityMagnitude: 20
   maxAirVel: 12
   airSpeed: 1
@@ -39362,22 +39481,22 @@ MonoBehaviour:
   backwardAirSpeed: 1
   groundHitLength: 1
   isGrounded: 0
-  jumpForce: 500
+  jumpForce: 525
   fallingThreshold: 3
   crouchHeight: 0.45
   normalHeight: 0.9
   groundedCrouchForce: 400
-  crouchSpeedMultiplier: 0.4
+  crouchSpeedMultiplier: 0.3
   crouchLerpSpeed: 30
   headClearanceRadius: 0.35
   waterDrag: 4
   maxWaterVel: 6
   waterDownForce: 5
-  maxLadderVel: 0
-  ladderDrag: 0
-  ladderLeaveForce: 0
-  ladderJumpForce: 0
-  ladderFirstMoveDelay: 0
+  maxLadderVel: 4
+  ladderDrag: 8
+  ladderLeaveForce: 20
+  ladderJumpForce: 400
+  ladderFirstMoveDelay: 0.1
 --- !u!114 &8261380307373194707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39393,6 +39512,7 @@ MonoBehaviour:
   hudManager: {fileID: 8261380306678737136}
   playerCamera: {fileID: 8261380307274702181}
   weaponManager: {fileID: 8261380305664115890}
+  gameManager: {fileID: 0}
   partsHealthToArmor: 5
   <maxHealth>k__BackingField: 100
   <health>k__BackingField: 100
@@ -40781,7 +40901,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   weaponAnimator: {fileID: 0}
-  playerInventory: {fileID: 0}
+  playerInventory: {fileID: 8261380307373194707}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: AK-47
@@ -40845,6 +40965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f99b4659a5dee3a428d2dcbaa1a3e14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInventory: {fileID: 0}
   weapon: {fileID: 8261380306194290932}
   pCamera: {fileID: 8261380307274702181}
   singleFire: 0

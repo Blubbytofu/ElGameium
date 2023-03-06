@@ -6,6 +6,8 @@ namespace PlayerObject
 {
     public class WeaponOverride : MonoBehaviour
     {
+        [SerializeField] private PlayerInventory playerInventory;
+
         [SerializeField] private Weapon weapon;
         [SerializeField] private PlayerCamera pCamera;
 
@@ -29,6 +31,11 @@ namespace PlayerObject
 
         private void Update()
         {
+            if (playerInventory.isDead || playerInventory.wonLevel)
+            {
+                return;
+            }
+
             GetInput();
             ExecuteShoot();
         }

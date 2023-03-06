@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 66169fdd85f885b4d81f167d619453af, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -307,11 +307,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ced4df1a9ae3a440b969a31e1237b0d, type: 3}
---- !u!4 &164786335 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8261380306796332257, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-  m_PrefabInstance: {fileID: 8261380306862157840}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &326518764
 GameObject:
   m_ObjectHideFlags: 0
@@ -2113,11 +2108,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167374052}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1196355584 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8261380307006042368, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-  m_PrefabInstance: {fileID: 8261380306862157840}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1205108316
 GameObject:
   m_ObjectHideFlags: 0
@@ -3937,17 +3927,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ced4df1a9ae3a440b969a31e1237b0d, type: 3}
---- !u!114 &1770608175 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8261380307274702181, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-  m_PrefabInstance: {fileID: 8261380306862157840}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7cc341a089dd07488825c2def228883, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1827764736
 GameObject:
   m_ObjectHideFlags: 0
@@ -5325,93 +5304,9 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5456723734399024111, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6246541477203233483, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6246541477203233483, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.0002571502
-      objectReference: {fileID: 0}
-    - target: {fileID: 7165514487752856913, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305840403696, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: damage
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305935944627, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: damage
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: damage
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: maxSpread
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: burstDelay
-      value: 0.07
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: deltaSpread
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: initialSpread
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: queueInterval
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: queueNextShot
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: queueShotProperty
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738635, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: timeBetweenShooting
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738636, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: newMaxSpread
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738636, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: normalMaxSpread
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738636, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: newInitialSpread
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380305962738636, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: normalInitialSpread
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307011553506, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: damage
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 8261380307248989551, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
       propertyPath: m_Name
       value: Player Holder
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307248989551, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_TagString
-      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8261380307248989584, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
       propertyPath: m_RootOrder
@@ -5456,118 +5351,6 @@ PrefabInstance:
     - target: {fileID: 8261380307248989584, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307274702177, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307274702179, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 631
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194667, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: canBHop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: jumpForce
-      value: 525
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: maxAirVel
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: groundDrag
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: ladderDrag
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: ladderHVel
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: ladderVVel
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: shiftToWalk
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: maxLadderVel
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: groundSnapVel
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: maxGroundedVel
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: cameraTransform
-      value: 
-      objectReference: {fileID: 1196355584}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: ladderJumpForce
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: ladderLeaveForce
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: ladderStickForce
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: BHopStartMinSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: groundSnapCooldown
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: playerCameraScript
-      value: 
-      objectReference: {fileID: 1770608175}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: BHopSpeedMultiplier
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: groundSnapTolerance
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: ladderFirstMoveDelay
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: orientationTransform
-      value: 
-      objectReference: {fileID: 164786335}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: walkingVelMultiplier
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: crouchSpeedMultiplier
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8261380307373194706, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: BHopMouseSpeedThreshold
-      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

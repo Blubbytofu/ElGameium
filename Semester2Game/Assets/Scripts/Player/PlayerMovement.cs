@@ -14,6 +14,7 @@ namespace PlayerObject
         [SerializeField] private CapsuleCollider playerCollider;
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private Transform orientationTransform;
+        [SerializeField] private PlayerInventory playerInventory;
         [SerializeField] private LayerMask environmentMask;
 
         [Header("Walking-----------------------------------------------------------------------------")]
@@ -97,9 +98,13 @@ namespace PlayerObject
             Physics.gravity = Physics.gravity.ReplaceField(newY: -gravityMagnitude);
         }
 
-
         private void Update()
         {
+            if (playerInventory.isDead || playerInventory.wonLevel)
+            {
+                return;
+            }
+
             groundHitLength = playerCollider.height * 0.5f * transform.localScale.y + 0.1f;
             isGrounded = Physics.Raycast(orientationTransform.position, -orientationTransform.up, out groundHit, groundHitLength, environmentMask);
 
@@ -112,6 +117,11 @@ namespace PlayerObject
 
         private void FixedUpdate()
         {
+            if (playerInventory.isDead || playerInventory.wonLevel)
+            {
+                return;
+            }
+
             switch (movementState)
             {
                 case MovementState.GROUNDED:

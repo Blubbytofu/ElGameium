@@ -10,13 +10,20 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject creditsMenu;
 
-    private void NewGame()
+    public void ReturnToMain(GameObject parent)
     {
-
+        parent.SetActive(false);
+        mainMenu.SetActive(true);
     }
 
-    private void ChooseLevel()
+    public void OpenSubMenu(GameObject subMenu)
     {
+        mainMenu.SetActive(false);
+        subMenu.SetActive(true);
+    }
 
+    public void QuitApp()
+    {
+        Application.Quit();
     }
 }
