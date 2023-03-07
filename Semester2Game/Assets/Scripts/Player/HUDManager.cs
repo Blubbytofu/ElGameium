@@ -7,6 +7,9 @@ namespace PlayerObject
 {
     public class HUDManager : MonoBehaviour
     {
+        [SerializeField] private GameManager gameManager;
+
+        [SerializeField] private GameObject levelIntro;
         [SerializeField] private GameObject gameHUD;
         [SerializeField] private GameObject gameOverMenu;
         [SerializeField] private GameObject gameWinMenu;
@@ -20,9 +23,34 @@ namespace PlayerObject
         public GameObject oxygenIndicator;
         [SerializeField] private GameObject altIndicator;
 
+        [SerializeField] private float levelIntroTime;
+
         private void Start()
         {
             StartCoroutine(TrackFrames());
+
+            gameHUD.SetActive(false);
+            gameOverMenu.SetActive(false);
+            gameWinMenu.SetActive(false);
+
+            ShowLevelIntro();
+            Invoke(nameof(HideLevelIntro), levelIntroTime);
+        }
+
+        private void ShowLevelIntro()
+        {
+            levelIntro.SetActive(true);
+
+            if (gameManager != null)
+            {
+                levelIntro.GetComponent<TextMeshProUGUI>().text = gameManager.GetLevelName();
+            }
+        }
+
+        private void HideLevelIntro()
+        {
+            levelIntro.SetActive(false);
+            gameHUD.SetActive(true);
         }
 
         private IEnumerator TrackFrames()
