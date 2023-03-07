@@ -9,6 +9,7 @@ namespace PlayerObject
         [SerializeField] private PlayerInventory playerInventory;
         //[SerializeField] private SettingsManager settingsManager;
         [SerializeField] private HUDManager hudManager;
+        [SerializeField] private PrefsManager prefsManager;
 
         //public AudioSource weaponManagerAudioSource;
         //public AudioClip[] weaponAttackSounds;
@@ -35,7 +36,7 @@ namespace PlayerObject
 
         private void Update()
         {
-            if (playerInventory.isDead || playerInventory.wonLevel)
+            if (playerInventory.isDead || playerInventory.wonLevel || prefsManager.settingsOpen)
             {
                 return;
             }

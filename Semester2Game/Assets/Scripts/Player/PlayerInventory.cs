@@ -10,6 +10,7 @@ namespace PlayerObject
         [SerializeField] private PlayerCamera playerCamera;
         [SerializeField] private WeaponManager weaponManager;
         [SerializeField] private GameManager gameManager;
+        [SerializeField] private PrefsManager prefsManager;
 
         [SerializeField] private int partsHealthToArmor;
         [field: SerializeField] public int maxHealth { get; private set; }

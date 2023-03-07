@@ -9990,6 +9990,7 @@ MonoBehaviour:
     m_Bits: 512
   weaponAnimator: {fileID: 8261380305962738637}
   playerInventory: {fileID: 8261380307373194707}
+  prefsManager: {fileID: 0}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: Glock-17
@@ -10054,6 +10055,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInventory: {fileID: 8261380307373194707}
+  prefsManager: {fileID: 0}
   weapon: {fileID: 8261380305962738635}
   pCamera: {fileID: 0}
   singleFire: 1
@@ -10149,6 +10151,7 @@ MonoBehaviour:
     m_Bits: 512
   weaponAnimator: {fileID: 8261380305935944628}
   playerInventory: {fileID: 8261380307373194707}
+  prefsManager: {fileID: 0}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: Spas-12
@@ -11899,6 +11902,7 @@ MonoBehaviour:
     m_Bits: 512
   weaponAnimator: {fileID: 8261380305840403697}
   playerInventory: {fileID: 8261380307373194707}
+  prefsManager: {fileID: 0}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: MAC-10
@@ -12035,6 +12039,7 @@ MonoBehaviour:
     m_Bits: 512
   weaponAnimator: {fileID: 8261380307011553508}
   playerInventory: {fileID: 8261380307373194707}
+  prefsManager: {fileID: 0}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: MAC-10
@@ -12099,6 +12104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInventory: {fileID: 8261380307373194707}
+  prefsManager: {fileID: 0}
   weapon: {fileID: 8261380307011553506}
   pCamera: {fileID: 8261380307274702179}
   singleFire: 1
@@ -14925,6 +14931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInventory: {fileID: 8261380307373194707}
   hudManager: {fileID: 8261380306678737136}
+  prefsManager: {fileID: 0}
   weapons:
   - {fileID: 8261380306713181020}
   - {fileID: 5456723734399024111}
@@ -30603,6 +30610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
+  prefsManager: {fileID: 0}
   levelIntro: {fileID: 6164876015383829953}
   gameHUD: {fileID: 402609603456186728}
   gameOverMenu: {fileID: 1046706932}
@@ -35618,6 +35626,7 @@ MonoBehaviour:
     m_Bits: 512
   weaponAnimator: {fileID: 8261380306722523292}
   playerInventory: {fileID: 8261380307373194707}
+  prefsManager: {fileID: 0}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: Crowbar
@@ -41210,6 +41219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInventory: {fileID: 8261380307373194707}
+  prefsManager: {fileID: 0}
   orientation: {fileID: 8261380306796332257}
   cameraPosition: {fileID: 8261380307006042368}
   playerCamera: {fileID: 8261380307274702180}
@@ -41495,6 +41505,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 8261380307006042368}
   orientationTransform: {fileID: 8261380306796332257}
   playerInventory: {fileID: 8261380307373194707}
+  prefsManager: {fileID: 0}
   environmentMask:
     serializedVersion: 2
     m_Bits: 64
@@ -41545,6 +41556,7 @@ MonoBehaviour:
   playerCamera: {fileID: 8261380307274702181}
   weaponManager: {fileID: 8261380305664115890}
   gameManager: {fileID: 0}
+  prefsManager: {fileID: 0}
   partsHealthToArmor: 5
   <maxHealth>k__BackingField: 100
   <health>k__BackingField: 100
@@ -42934,6 +42946,7 @@ MonoBehaviour:
     m_Bits: 512
   weaponAnimator: {fileID: 0}
   playerInventory: {fileID: 8261380307373194707}
+  prefsManager: {fileID: 0}
   weaponManager: {fileID: 8261380305664115890}
   owned: 1
   <weaponName>k__BackingField: AK-47
@@ -42998,6 +43011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInventory: {fileID: 0}
+  prefsManager: {fileID: 0}
   weapon: {fileID: 8261380306194290932}
   pCamera: {fileID: 8261380307274702181}
   singleFire: 0

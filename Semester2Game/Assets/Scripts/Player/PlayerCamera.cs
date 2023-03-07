@@ -8,6 +8,7 @@ namespace PlayerObject
     {
         [Header("References-----------------------------------------------------------------------------")]
         [SerializeField] private PlayerInventory playerInventory;
+        [SerializeField] private PrefsManager prefsManager;
         [SerializeField] private Transform orientation;
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform playerCamera;
@@ -42,11 +43,16 @@ namespace PlayerObject
 
         private void Update()
         {
-            if (playerInventory.isDead || playerInventory.wonLevel)
+            if (playerInventory.isDead || playerInventory.wonLevel || prefsManager.settingsOpen)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 return;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
 
             TryInteract();
@@ -58,7 +64,7 @@ namespace PlayerObject
 
         private void LateUpdate()
         {
-            if (playerInventory.isDead || playerInventory.wonLevel)
+            if (playerInventory.isDead || playerInventory.wonLevel || prefsManager.settingsOpen)
             {
                 return;
             }

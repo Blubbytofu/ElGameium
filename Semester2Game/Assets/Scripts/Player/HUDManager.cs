@@ -8,6 +8,7 @@ namespace PlayerObject
     public class HUDManager : MonoBehaviour
     {
         [SerializeField] private GameManager gameManager;
+        [SerializeField] private PrefsManager prefsManager;
 
         [SerializeField] private GameObject levelIntro;
         [SerializeField] private GameObject gameHUD;
@@ -35,6 +36,14 @@ namespace PlayerObject
 
             ShowLevelIntro();
             Invoke(nameof(HideLevelIntro), levelIntroTime);
+        }
+
+        private void Update()
+        {
+            if (levelIntro.activeSelf && prefsManager.settingsOpen)
+            {
+                HideLevelIntro();
+            }
         }
 
         private void ShowLevelIntro()

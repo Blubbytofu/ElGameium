@@ -15,6 +15,7 @@ namespace PlayerObject
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private Transform orientationTransform;
         [SerializeField] private PlayerInventory playerInventory;
+        [SerializeField] private PrefsManager prefsManager;
         [SerializeField] private LayerMask environmentMask;
 
         [Header("Walking-----------------------------------------------------------------------------")]
@@ -100,7 +101,7 @@ namespace PlayerObject
 
         private void Update()
         {
-            if (playerInventory.isDead || playerInventory.wonLevel)
+            if (playerInventory.isDead || playerInventory.wonLevel || prefsManager.settingsOpen)
             {
                 return;
             }
@@ -117,7 +118,7 @@ namespace PlayerObject
 
         private void FixedUpdate()
         {
-            if (playerInventory.isDead || playerInventory.wonLevel)
+            if (playerInventory.isDead || playerInventory.wonLevel || prefsManager.settingsOpen)
             {
                 return;
             }

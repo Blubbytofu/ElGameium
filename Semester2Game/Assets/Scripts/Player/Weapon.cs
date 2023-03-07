@@ -16,6 +16,7 @@ namespace PlayerObject
         [SerializeField] private LayerMask environmentMask, enemyMask;
         [SerializeField] private Animator weaponAnimator;
         [SerializeField] private PlayerInventory playerInventory;
+        [SerializeField] private PrefsManager prefsManager;
         [SerializeField] private WeaponManager weaponManager;
         private RaycastHit rayHit;
 
@@ -129,7 +130,7 @@ namespace PlayerObject
 
         private void Update()
         {
-            if (playerInventory.isDead || playerInventory.wonLevel)
+            if (playerInventory.isDead || playerInventory.wonLevel || prefsManager.settingsOpen)
             {
                 return;
             }

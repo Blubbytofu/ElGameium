@@ -7,22 +7,22 @@ using UnityEngine.UI;
 
 public class PrefsManager : MonoBehaviour
 {
-    public GameObject settings;
-    public PlayerInventory playerInventory;
-    public PlayerCamera playerCamera;
-    public bool settingsOpen;
+    [SerializeField] private GameObject settings;
+    [SerializeField] private PlayerInventory playerInventory;
+    [SerializeField] private PlayerCamera playerCamera;
+    public bool settingsOpen { get; private set; }
 
-    public Slider xSensSlider;
-    public TextMeshProUGUI xSensText;
+    [SerializeField] private Slider xSensSlider;
+    [SerializeField] private TextMeshProUGUI xSensText;
 
-    public Slider ySensSlider;
-    public TextMeshProUGUI ySensText;
+    [SerializeField] private Slider ySensSlider;
+    [SerializeField] private TextMeshProUGUI ySensText;
 
-    public Slider FOVSlider;
-    public TextMeshProUGUI FOVText;
+    [SerializeField] private Slider FOVSlider;
+    [SerializeField] private TextMeshProUGUI FOVText;
 
-    public Slider WFOVSlider;
-    public TextMeshProUGUI WFOVText;
+    [SerializeField] private Slider WFOVSlider;
+    [SerializeField] private TextMeshProUGUI WFOVText;
 
     private void Awake()
     {
@@ -55,7 +55,12 @@ public class PrefsManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !playerInventory.isDead)
+        if (playerInventory.isDead || playerInventory.wonLevel)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
         {
             settingsOpen = !settingsOpen;
             if (settingsOpen)
