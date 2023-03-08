@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ad2f5a10cb69b47b17a20b81a44d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Level 2
+  levelName: Level 3
   maxEnemies: 0
   maxSecrets: 0
 --- !u!1 &1493249798
@@ -1064,18 +1064,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    - target: {fileID: 523568589, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 141910636}
-    - target: {fileID: 523568589, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadNewLevel
-      objectReference: {fileID: 0}
-    - target: {fileID: 523568589, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Level 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1205464986, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1107,34 +1095,6 @@ PrefabInstance:
     - target: {fileID: 1621554034, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
       value: Level 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1636359161, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 141910636}
-    - target: {fileID: 1636359161, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadNewLevel
-      objectReference: {fileID: 0}
-    - target: {fileID: 1719777618, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 141910636}
-    - target: {fileID: 1719777618, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 141910636}
-    - target: {fileID: 1719777618, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: DeactivateObject
-      objectReference: {fileID: 0}
-    - target: {fileID: 1719777618, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: LoadNewLevel
-      objectReference: {fileID: 0}
-    - target: {fileID: 1719777618, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: Level 3
       objectReference: {fileID: 0}
     - target: {fileID: 5562725718642545478, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
       propertyPath: m_IsActive

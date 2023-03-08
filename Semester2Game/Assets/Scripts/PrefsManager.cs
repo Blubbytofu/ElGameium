@@ -12,7 +12,6 @@ public class PrefsManager : MonoBehaviour
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerCamera playerCamera;
     [SerializeField] private float firstInitialSettingsDelay;
-    private bool canOpenSettings;
 
     public bool settingsOpen { get; private set; }
 

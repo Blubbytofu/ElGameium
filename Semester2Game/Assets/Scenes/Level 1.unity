@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ad2f5a10cb69b47b17a20b81a44d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Level One
+  levelName: Welcome to the Jungle
   maxEnemies: 0
   maxSecrets: 0
 --- !u!1 &1493249798
@@ -993,6 +993,14 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1719777618, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 141910636}
+    - target: {fileID: 1719777618, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 141910636}
     - target: {fileID: 1962832755, guid: 5e4cf213380d5fd4284991bea155b2c4, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
