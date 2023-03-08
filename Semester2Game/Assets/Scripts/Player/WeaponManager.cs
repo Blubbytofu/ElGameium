@@ -19,6 +19,7 @@ namespace PlayerObject
         [SerializeField] private int[] weaponCurrentAmmo;
         [SerializeField] private int[] weaponMaxAmmo;
         private int weaponID;
+        private int lastWeaponUsedID;
 
         [SerializeField] private PlayerMovement playerMovement;
         [SerializeField] private float centerHorizontalPosition;
@@ -51,6 +52,7 @@ namespace PlayerObject
 
             EquipWeapon();
             MoveSway();
+            LastWeaponInput();
 
             bool mag = weaponComp.hasMag;
             bool parent = weaponComp.isParentWeapon && weaponComp.activeSecondary;
@@ -79,6 +81,17 @@ namespace PlayerObject
         {
             weaponID = index;
             weapons[index].GetComponent<Weapon>().owned = true;
+        }
+
+        private void LastWeaponInput()
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                int tempID;
+                tempID = weaponID;
+                weaponID = lastWeaponUsedID;
+                lastWeaponUsedID = tempID;
+            }
         }
 
         private void MoveSway()
@@ -145,34 +158,42 @@ namespace PlayerObject
         {
             if (Input.GetKeyDown(KeyCode.Alpha1) && weapons.Length > 0 && weapons[0].GetComponent<Weapon>().owned)
             {
+                lastWeaponUsedID = weaponID;
                 weaponID = 0;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2) && weapons.Length > 1 && weapons[1].GetComponent<Weapon>().owned)
             {
+                lastWeaponUsedID = weaponID;
                 weaponID = 1;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3) && weapons.Length > 2 && weapons[2].GetComponent<Weapon>().owned)
             {
+                lastWeaponUsedID = weaponID;
                 weaponID = 2;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha4) && weapons.Length > 3 && weapons[3].GetComponent<Weapon>().owned)
             {
+                lastWeaponUsedID = weaponID;
                 weaponID = 3;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha5) && weapons.Length > 4 && weapons[4].GetComponent<Weapon>().owned)
             {
+                lastWeaponUsedID = weaponID;
                 weaponID = 4;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha6) && weapons.Length > 5 && weapons[5].GetComponent<Weapon>().owned)
             {
+                lastWeaponUsedID = weaponID;
                 weaponID = 5;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha7) && weapons.Length > 6 && weapons[6].GetComponent<Weapon>().owned)
             {
+                lastWeaponUsedID = weaponID;
                 weaponID = 6;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha8) && weapons.Length > 7 && weapons[7].GetComponent<Weapon>().owned)
             {
+                lastWeaponUsedID = weaponID;
                 weaponID = 7;
             }
             //and so on
@@ -195,6 +216,7 @@ namespace PlayerObject
 
         private void CycleDown()
         {
+            lastWeaponUsedID = weaponID;
             if (weaponID > weapons.Length - 2)
             {
                 weaponID = 0;
@@ -216,6 +238,7 @@ namespace PlayerObject
 
         private void CycleUp()
         {
+            lastWeaponUsedID = weaponID;
             if (weaponID < 1)
             {
                 weaponID = weapons.Length - 1;

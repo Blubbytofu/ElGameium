@@ -9,7 +9,11 @@ public class PrefsManager : MonoBehaviour
 {
     [SerializeField] private GameObject settings;
     [SerializeField] private PlayerInventory playerInventory;
+    [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerCamera playerCamera;
+    [SerializeField] private float firstInitialSettingsDelay;
+    private bool canOpenSettings;
+
     public bool settingsOpen { get; private set; }
 
     [SerializeField] private Slider xSensSlider;
@@ -23,6 +27,9 @@ public class PrefsManager : MonoBehaviour
 
     [SerializeField] private Slider WFOVSlider;
     [SerializeField] private TextMeshProUGUI WFOVText;
+
+    [SerializeField] private Toggle shiftToWalkToggle;
+    private int shiftToWalk;
 
     private void Awake()
     {
@@ -46,16 +53,21 @@ public class PrefsManager : MonoBehaviour
             PlayerPrefs.SetFloat("WFOV", 90);
         }
 
+        if (!PlayerPrefs.HasKey("ShiftToWalk"))
+        {
+            PlayerPrefs.SetInt("ShiftToWalk", 1);
+        }
+
         LoadSettings();
 
-        UpdateSliders();
-        SliderLengths();
+        UpdateSettingsHudValues();
+        UpdateSettingHudStates();
         settings.SetActive(false);
     }
 
     private void Update()
     {
-        if (playerInventory.isDead || playerInventory.wonLevel)
+        if (playerInventory.isDead || playerInventory.wonLevel || Time.timeSinceLevelLoad < firstInitialSettingsDelay)
         {
             return;
         }
@@ -66,7 +78,7 @@ public class PrefsManager : MonoBehaviour
             if (settingsOpen)
             {
                 settings.SetActive(true);
-                SliderLengths();
+                UpdateSettingHudStates();
             }
             else
             {
@@ -90,15 +102,16 @@ public class PrefsManager : MonoBehaviour
         settings.SetActive(false);
     }
 
-    private void SliderLengths()
+    private void UpdateSettingHudStates()
     {
         xSensSlider.value = PlayerPrefs.GetFloat("xSens");
         ySensSlider.value = PlayerPrefs.GetFloat("ySens");
         FOVSlider.value = PlayerPrefs.GetFloat("FOV");
         WFOVSlider.value = PlayerPrefs.GetFloat("WFOV");
+        shiftToWalkToggle.isOn = PlayerPrefs.GetInt("ShiftToWalk") == 1 ? true: false;
     }
 
-    private void UpdateSliders()
+    private void UpdateSettingsHudValues()
     {
         XSensSlider();
         YSensSlider();
@@ -126,12 +139,18 @@ public class PrefsManager : MonoBehaviour
         WFOVText.text = WFOVSlider.value.ToString("0");
     }
 
+    public void ToggleShiftToRun()
+    {
+        shiftToWalk = shiftToWalkToggle.isOn ? 1 : 0;
+    }
+
     public void SaveSettings()
     {
         PlayerPrefs.SetFloat("xSens", xSensSlider.value);
         PlayerPrefs.SetFloat("ySens", ySensSlider.value);
         PlayerPrefs.SetFloat("FOV", FOVSlider.value);
         PlayerPrefs.SetFloat("WFOV", WFOVSlider.value);
+        PlayerPrefs.SetInt("ShiftToWalk", shiftToWalk);
         PlayerPrefs.Save();
         LoadSettings();
     }
@@ -142,10 +161,13 @@ public class PrefsManager : MonoBehaviour
         ySensSlider.value = PlayerPrefs.GetFloat("ySens");
         FOVSlider.value = PlayerPrefs.GetFloat("FOV");
         WFOVSlider.value = PlayerPrefs.GetFloat("WFOV");
+        shiftToWalk = PlayerPrefs.GetInt("ShiftToWalk");
 
         playerCamera.SetXSens(PlayerPrefs.GetFloat("xSens"));
         playerCamera.SetYSens(PlayerPrefs.GetFloat("ySens"));
         playerCamera.SetFOV(PlayerPrefs.GetFloat("FOV"));
         playerCamera.SetSecondaryFOV(PlayerPrefs.GetFloat("WFOV"));
+
+        playerMovement.SetShiftToWalk(shiftToWalk == 1 ? true : false);
     }
 }

@@ -571,6 +571,11 @@ namespace PlayerObject
             }
         }
 
+        public void SetShiftToWalk(bool state)
+        {
+            shiftToWalk = state;
+        }
+
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;

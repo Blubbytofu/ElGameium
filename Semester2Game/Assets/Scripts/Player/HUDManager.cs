@@ -9,6 +9,7 @@ namespace PlayerObject
     {
         [SerializeField] private GameManager gameManager;
         [SerializeField] private PrefsManager prefsManager;
+        [SerializeField] private PlayerInventory playerInventory;
 
         [SerializeField] private GameObject levelIntro;
         [SerializeField] private GameObject gameHUD;
@@ -40,7 +41,7 @@ namespace PlayerObject
 
         private void Update()
         {
-            if (levelIntro.activeSelf && prefsManager.settingsOpen)
+            if (levelIntro.activeSelf && (prefsManager.settingsOpen || playerInventory.isDead || playerInventory.wonLevel))
             {
                 HideLevelIntro();
             }

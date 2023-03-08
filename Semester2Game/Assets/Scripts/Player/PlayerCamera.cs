@@ -57,6 +57,7 @@ namespace PlayerObject
 
             TryInteract();
             DetectHead();
+            GetChildrenZoom();
 
             primaryCamera.fieldOfView = FOV * (1.0f / zoomFactor);
             secondaryCamera.fieldOfView = secondaryFOV * (1.0f / zoomFactor);
@@ -86,6 +87,11 @@ namespace PlayerObject
 
             playerCamera.rotation = Quaternion.Euler(xRotation, yRotation, 0);
             orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        }
+
+        private void GetChildrenZoom()
+        {
+
         }
 
         private void TryInteract()
