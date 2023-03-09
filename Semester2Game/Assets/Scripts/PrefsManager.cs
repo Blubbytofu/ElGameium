@@ -30,6 +30,12 @@ public class PrefsManager : MonoBehaviour
     [SerializeField] private Toggle shiftToWalkToggle;
     private int shiftToWalk;
 
+    [SerializeField] private Toggle fullScreenToggle;
+    private int fullScreen;
+
+    [SerializeField] private Slider targetFPSSlider;
+    [SerializeField] private TextMeshProUGUI targetFPSText;
+
     private void Awake()
     {
         if (!PlayerPrefs.HasKey("xSens"))
@@ -57,9 +63,19 @@ public class PrefsManager : MonoBehaviour
             PlayerPrefs.SetInt("ShiftToWalk", 1);
         }
 
+        if (!PlayerPrefs.HasKey("FullScreen"))
+        {
+            PlayerPrefs.SetInt("FullScreen", 1);
+        }
+
+        if (!PlayerPrefs.HasKey("TargetFPS"))
+        {
+            PlayerPrefs.SetFloat("TargetFPS", 120);
+        }
+
         LoadSettings();
 
-        UpdateSettingsHudValues();
+        UpdateSliderValues();
         UpdateSettingHudStates();
         settings.SetActive(false);
     }
@@ -107,15 +123,23 @@ public class PrefsManager : MonoBehaviour
         ySensSlider.value = PlayerPrefs.GetFloat("ySens");
         FOVSlider.value = PlayerPrefs.GetFloat("FOV");
         WFOVSlider.value = PlayerPrefs.GetFloat("WFOV");
-        shiftToWalkToggle.isOn = PlayerPrefs.GetInt("ShiftToWalk") == 1 ? true: false;
+        shiftToWalkToggle.isOn = PlayerPrefs.GetInt("ShiftToWalk") == 1 ? true : false;
+        fullScreenToggle.isOn = PlayerPrefs.GetInt("FullScreen") == 1 ? true : false;
+        targetFPSSlider.value = PlayerPrefs.GetFloat("TargetFPS");
     }
 
-    private void UpdateSettingsHudValues()
+    private void UpdateSliderValues()
     {
         XSensSlider();
         YSensSlider();
         SliderFOV();
         SliderWFOV();
+        TargetFPSSLider();
+    }
+
+    public void TargetFPSSLider()
+    {
+        targetFPSText.text = targetFPSSlider.value.ToString("0");
     }
 
     public void XSensSlider()
@@ -143,6 +167,11 @@ public class PrefsManager : MonoBehaviour
         shiftToWalk = shiftToWalkToggle.isOn ? 1 : 0;
     }
 
+    public void ToggleFullScreen()
+    {
+        fullScreen = fullScreenToggle.isOn ? 1 : 0;
+    }
+
     public void SaveSettings()
     {
         PlayerPrefs.SetFloat("xSens", xSensSlider.value);
@@ -150,6 +179,8 @@ public class PrefsManager : MonoBehaviour
         PlayerPrefs.SetFloat("FOV", FOVSlider.value);
         PlayerPrefs.SetFloat("WFOV", WFOVSlider.value);
         PlayerPrefs.SetInt("ShiftToWalk", shiftToWalk);
+        PlayerPrefs.SetInt("FullScreen", fullScreen);
+        PlayerPrefs.SetFloat("TargetFPS", targetFPSSlider.value);
         PlayerPrefs.Save();
         LoadSettings();
     }
@@ -161,11 +192,15 @@ public class PrefsManager : MonoBehaviour
         FOVSlider.value = PlayerPrefs.GetFloat("FOV");
         WFOVSlider.value = PlayerPrefs.GetFloat("WFOV");
         shiftToWalk = PlayerPrefs.GetInt("ShiftToWalk");
+        targetFPSSlider.value = PlayerPrefs.GetFloat("TargetFPS");
+        fullScreen = PlayerPrefs.GetInt("FullScreen");
 
         playerCamera.SetXSens(PlayerPrefs.GetFloat("xSens"));
         playerCamera.SetYSens(PlayerPrefs.GetFloat("ySens"));
         playerCamera.SetFOV(PlayerPrefs.GetFloat("FOV"));
         playerCamera.SetSecondaryFOV(PlayerPrefs.GetFloat("WFOV"));
+        Application.targetFrameRate = (int) PlayerPrefs.GetFloat("TargetFPS");
+        Screen.fullScreen = fullScreen == 1 ? true : false;
 
         playerMovement.SetShiftToWalk(shiftToWalk == 1 ? true : false);
     }
