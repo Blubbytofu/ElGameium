@@ -108,7 +108,6 @@ namespace PlayerObject
 
             groundHitLength = playerCollider.height * 0.5f * transform.localScale.y + 0.1f;
             isGrounded = Physics.Raycast(orientationTransform.position, -orientationTransform.up, out groundHit, groundHitLength, environmentMask);
-
             GetInput();
 
             DetermineJumpState();
@@ -356,7 +355,6 @@ namespace PlayerObject
                 {
                     ladderLeave = false;
                     playerRb.AddForce(-ladderLeaveForce * ladderDirection, ForceMode.Impulse);
-                    Debug.Log("Leave " + Time.time);
                 }
             }
             else if (ladderAngle > 45f && ladderAngle < 135f)
@@ -485,9 +483,9 @@ namespace PlayerObject
 
             if (Physics.Raycast(orientationTransform.position, -orientationTransform.up, out hit, environmentMask))
             {
-                if (hit.distance > transform.localScale.y && hit.distance < transform.localScale.y + groundSnapTolerance && Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle)
+                if (hit.distance > transform.localScale.y && hit.distance < transform.localScale.y + groundSnapTolerance && Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle && Vector3.Angle(hit.normal, Vector3.up) != 0)
                 {
-                    if (!isGrounded && playerRb.velocity.y < groundSnapVel)
+                    if (!isGrounded && playerRb.velocity.y > -groundSnapVel)
                     {
                         playerRb.velocity -= groundSnapVel * orientationTransform.up;
                     }
@@ -499,6 +497,8 @@ namespace PlayerObject
                     Invoke(nameof(ResetGroundSnap), groundSnapCooldown);
                     return true;
                 }
+
+                return false;
             }
 
             return false;
@@ -581,6 +581,7 @@ namespace PlayerObject
             Gizmos.color = Color.red;
             Gizmos.DrawLine(orientationTransform.position, orientationTransform.position - new Vector3(0, groundHitLength, 0));
             Gizmos.DrawWireSphere(orientationTransform.position + normalHeight * orientationTransform.up, headClearanceRadius);
+            Gizmos.DrawWireSphere(orientationTransform.position - new Vector3(0, normalHeight, 0), 0.1f);
         }
 
         private void OnDrawGizmos()
