@@ -462,7 +462,7 @@ namespace PlayerObject
 
         private bool OnGroundSnap()
         {
-            if (jumpingUpStage || fallingDownStage || crouchInput || inWater || onLadder || isGrounded)
+            if (crouchInput || inWater || onLadder || isGrounded || jumpingUpStage || fallingDownStage)
             {
                 return false;
             }

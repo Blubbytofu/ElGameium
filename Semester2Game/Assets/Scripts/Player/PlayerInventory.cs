@@ -106,14 +106,14 @@ namespace PlayerObject
             }
         }
 
-        private void OnTriggerStay(Collider other)
+        private void OnCollisionStay(Collision collision)
         {
             if (isDead || wonLevel)
             {
                 return;
             }
 
-            IConsumable consumable = other.gameObject.GetComponent<IConsumable>();
+            IConsumable consumable = collision.gameObject.GetComponent<IConsumable>();
             if (consumable != null)
             {
                 consumable.Consume(this, weaponManager);
