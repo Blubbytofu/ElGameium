@@ -19,6 +19,7 @@ public class Door : MonoBehaviour, IInteractable
     [SerializeField] LayerMask playerMask;
 
     [SerializeField] private Vector3 doorDimensions;
+    [SerializeField] private Vector3 doorDimensionsOffset;
     private float startOpenTime;
     [SerializeField] private float totalOpenTime;
 
@@ -75,7 +76,7 @@ public class Door : MonoBehaviour, IInteractable
         }
 
         //check if player is in the open position space
-        if (Physics.CheckBox(closedPosition, doorDimensions, Quaternion.identity, playerMask))
+        if (Physics.CheckBox(closedPosition + doorDimensionsOffset, doorDimensions, Quaternion.identity, playerMask))
         {
             obstruction = true;
         }
@@ -148,6 +149,6 @@ public class Door : MonoBehaviour, IInteractable
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireCube(transform.position, doorDimensions);
+        Gizmos.DrawWireCube(transform.position + doorDimensionsOffset, doorDimensions);
     }
 }

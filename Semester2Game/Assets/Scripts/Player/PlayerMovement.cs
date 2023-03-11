@@ -197,15 +197,16 @@ namespace PlayerObject
 
         private void DetermineJumpState()
         {
-            if (jumpingUpStage && playerRb.velocity.y <= 0)
+            if (jumpingUpStage && playerRb.velocity.y <= 0 && !isGrounded)
             {
-                jumpingUpStage = false;
                 fallingDownStage = true;
+                jumpingUpStage = false;
             }
 
             if (fallingDownStage && isGrounded)
             {
                 fallingDownStage = false;
+                jumpingUpStage = false;
             }
 
             if (!jumpingUpStage && playerRb.velocity.y < -fallingThreshold && !fallingDownStage)
@@ -461,7 +462,7 @@ namespace PlayerObject
 
         private bool OnGroundSnap()
         {
-            if (jumpingUpStage || fallingDownStage || crouchInput || inWater || onLadder)
+            if (jumpingUpStage || fallingDownStage || crouchInput || inWater || onLadder || isGrounded)
             {
                 return false;
             }
@@ -483,19 +484,25 @@ namespace PlayerObject
 
             if (Physics.Raycast(orientationTransform.position, -orientationTransform.up, out hit, environmentMask))
             {
-                if (hit.distance > transform.localScale.y && hit.distance < transform.localScale.y + groundSnapTolerance && Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle && Vector3.Angle(hit.normal, Vector3.up) != 0)
+                if (hit.distance > transform.localScale.y && hit.distance < transform.localScale.y + groundSnapTolerance)
                 {
-                    if (!isGrounded && playerRb.velocity.y > -groundSnapVel)
+                    if (Vector3.Angle(hit.normal, Vector3.up) < maxGroundAngle)
                     {
-                        playerRb.velocity -= groundSnapVel * orientationTransform.up;
+                        if (playerRb.velocity.y > -groundSnapVel && playerRb.velocity.y < 0)
+                        {
+                            playerRb.velocity -= groundSnapVel * orientationTransform.up;
+                        }
+                        else
+                        {
+                            playerRb.velocity = new Vector3(playerRb.velocity.x, 0, playerRb.velocity.z);
+                        }
+
+                        doGroundSnapCooldown = true;
+                        StartCoroutine(ResetGroundSnap());
+                        return true;
                     }
-                    else
-                    {
-                        playerRb.velocity = new Vector3(playerRb.velocity.x, 0, playerRb.velocity.z);
-                    }
-                    doGroundSnapCooldown = true;
-                    Invoke(nameof(ResetGroundSnap), groundSnapCooldown);
-                    return true;
+
+                    return false;
                 }
 
                 return false;
@@ -504,8 +511,9 @@ namespace PlayerObject
             return false;
         }
 
-        private void ResetGroundSnap()
+        private IEnumerator ResetGroundSnap()
         {
+            yield return new WaitForSeconds(groundSnapCooldown);
             doGroundSnapCooldown = false;
         }
 
@@ -530,10 +538,10 @@ namespace PlayerObject
         {
             if (jumpInput)
             {
+                jumpingUpStage = true;
+
                 jumpInput = false;
                 playerRb.velocity = playerRb.velocity.ReplaceField(newY: 0);
-
-                jumpingUpStage = true;
 
                 playerRb.AddForce(jumpForce * orientationTransform.up, ForceMode.Impulse);
             }
@@ -581,7 +589,7 @@ namespace PlayerObject
             Gizmos.color = Color.red;
             Gizmos.DrawLine(orientationTransform.position, orientationTransform.position - new Vector3(0, groundHitLength, 0));
             Gizmos.DrawWireSphere(orientationTransform.position + normalHeight * orientationTransform.up, headClearanceRadius);
-            Gizmos.DrawWireSphere(orientationTransform.position - new Vector3(0, normalHeight, 0), 0.1f);
+            //Gizmos.DrawWireSphere(orientationTransform.position - new Vector3(0, normalHeight, 0), 0.1f);
         }
 
         private void OnDrawGizmos()

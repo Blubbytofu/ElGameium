@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 25076
+  controlID: 46
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 25019
+  controlID: 47
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 25000
+  controlID: 48
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GameView
+  m_Name: SceneView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -217,13 +217,13 @@ MonoBehaviour:
     height: 673
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 12}
+  m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
   - {fileID: 12}
   - {fileID: 15}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -252,7 +252,7 @@ MonoBehaviour:
   - {fileID: 18}
   - {fileID: 19}
   m_Selected: 3
-  m_LastSelected: 1
+  m_LastSelected: 0
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -272,8 +272,8 @@ MonoBehaviour:
     y: 0
     width: 481
     height: 947
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 20}
@@ -414,21 +414,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: d08ffeff5a99feffcc92ffffd29dfffff69dfffffc9dffff40b0ffff70b9ffff2af8ffff3af8ffff04fbffff06fbffff4c630000769a0000debb000000750200
+      m_ExpandedIDs: e2e5ffff06e6ffff0ae6ffff16e6ffff0cefffff2efbffffda6c00001a6d0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Starting Room 1
-        m_OriginalName: Starting Room 1
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 161530
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 8}
       m_SearchString: 
@@ -512,10 +512,10 @@ MonoBehaviour:
       layout: 1
     - dockPosition: 0
       containerId: overlay-container--left
-      floating: 0
+      floating: 1
       collapsed: 0
       displayed: 1
-      snapOffset: {x: 0, y: 25}
+      snapOffset: {x: 56, y: 28}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: unity-transform-toolbar
@@ -696,9 +696,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 12.284389, y: 12.132212, z: 11.609346}
+    m_Target: {x: -25.116465, y: 19.321499, z: 23.7577}
     speed: 2
-    m_Value: {x: 12.284389, y: 12.132212, z: 11.609346}
+    m_Value: {x: -25.116465, y: 19.321499, z: 23.7577}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -744,13 +744,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.21802273, y: -0.6655873, z: 0.21243432, w: -0.68140197}
+    m_Target: {x: -0.1851613, y: -0.6712942, z: 0.17815728, w: -0.6954885}
     speed: 2
-    m_Value: {x: -0.21802521, y: -0.6655948, z: 0.21243672, w: -0.68140966}
+    m_Value: {x: -0.18539448, y: -0.6701279, z: 0.1778469, w: -0.6963676}
   m_Size:
-    m_Target: 10
+    m_Target: 6.2998013
     speed: 2
-    m_Value: 10
+    m_Value: 6.2998013
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -965,22 +965,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Player
+    - Assets/Scripts/Interactables
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/Player
+  - Assets/Scripts/Interactables
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Josh P\Desktop\Create With Code\ElGameium\Semester2Game
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 247}
-    m_SelectedIDs: 969b0000
-    m_LastClickedID: 39830
-    m_ExpandedIDs: 000000003a6d00003c6d00003e6d0000406d0000426d0000446d0000466d0000486d00005a6d0000626d0000b8780000da7800005a79000014740200167402001874020000ca9a3b
+    scrollPos: {x: 0, y: 359}
+    m_SelectedIDs: e4680000
+    m_LastClickedID: 26852
+    m_ExpandedIDs: 000000007468000076680000786800007a6800007c6800007e68000080680000826800008468000086680000886800008a6800008c6800008e6800009068000092680000d068000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1008,7 +1008,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000003a6d00003c6d00003e6d0000406d0000426d0000446d0000466d0000486d00005a6d0000626d0000b8780000da7800005a79000014740200167402001874020000ca9a3bffffff7f
+    m_ExpandedIDs: 000000007468000076680000786800007a6800007c6800007e68000080680000826800008468000086680000886800008a6800008c6800008e6800009068000092680000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1033,9 +1033,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 62770200ec760200
-    m_LastClickedInstanceID: 161634
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: da46ffff
+    m_LastClickedInstanceID: -47398
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1122,7 +1122,7 @@ MonoBehaviour:
     m_SaveData: []
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 161516
+  m_LastSelectedObjectID: -35750
 --- !u!114 &19
 MonoBehaviour:
   m_ObjectHideFlags: 52
