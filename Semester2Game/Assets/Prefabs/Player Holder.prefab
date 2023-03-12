@@ -46720,7 +46720,7 @@ Transform:
   - {fileID: 8261380307373194671}
   - {fileID: 8261380307274702180}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8261380307265084604
 GameObject:
@@ -47250,14 +47250,14 @@ MonoBehaviour:
     m_Bits: 64
   walkingVelMultiplier: 0.6
   shiftToWalk: 1
-  maxGroundedVel: 11
+  maxGroundedVel: 10
   groundDrag: 7
   groundSnapTolerance: 0.2
   maxGroundAngle: 45
   groundSnapVel: 7
   groundSnapCooldown: 0.05
   gravityMagnitude: 20
-  maxAirVel: 12
+  maxAirVel: 10
   airSpeed: 1
   airDrag: 1
   backwardAirSpeed: 1

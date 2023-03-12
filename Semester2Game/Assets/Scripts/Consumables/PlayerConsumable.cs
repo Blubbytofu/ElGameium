@@ -22,6 +22,14 @@ public class PlayerConsumable : MonoBehaviour, IConsumable
     [SerializeField] private bool unlockWeapon;
     [SerializeField] private int unlockIndex;
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Death"))
+        {
+            Destroy(gameObject);
+        }
+    }
+
     public void Consume(PlayerInventory playerInventory, WeaponManager weaponManager)
     {
         if (changeHealth)

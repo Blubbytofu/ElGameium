@@ -24,6 +24,17 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(LoadLevelAsync(levelToLoad));
     }
 
+    public void ReloadLevel()
+    {
+        if (loadingScreen != null)
+        {
+            loadingScreen.SetActive(true);
+        }
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        StartCoroutine(LoadLevelAsync(SceneManager.GetActiveScene().name));
+    }
+
     private IEnumerator LoadLevelAsync(string levelToLoad)
     {
         AsyncOperation load = SceneManager.LoadSceneAsync(levelToLoad);

@@ -38,6 +38,8 @@ public class PrefsManager : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1;
+
         if (!PlayerPrefs.HasKey("xSens"))
         {
             PlayerPrefs.SetFloat("xSens", 2);
@@ -78,6 +80,7 @@ public class PrefsManager : MonoBehaviour
         UpdateSliderValues();
         UpdateSettingHudStates();
         settings.SetActive(false);
+        settingsOpen = false;
     }
 
     private void Update()
