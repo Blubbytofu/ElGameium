@@ -207,6 +207,8 @@ namespace PlayerObject
             {
                 fallingDownStage = false;
                 jumpingUpStage = false;
+                doGroundSnapCooldown = true;
+                StartCoroutine(ResetGroundSnap());
             }
 
             if (!jumpingUpStage && playerRb.velocity.y < -fallingThreshold && !fallingDownStage)

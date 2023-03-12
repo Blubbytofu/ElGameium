@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8764227304421056120}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 380596924818243508}
   - component: {fileID: 380596924818243511}
   - component: {fileID: 380596924818243510}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Glock Unlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,9 +156,9 @@ MonoBehaviour:
   healthAmount: 0
   changeArmor: 0
   armorAmount: 0
-  changeAmmo: 1
-  ammoIndex: 1
-  ammoAmount: 17
+  changeAmmo: 0
+  ammoIndex: 0
+  ammoAmount: 0
   unlockWeapon: 1
   unlockIndex: 1
 --- !u!54 &380596924818243510
@@ -187,7 +187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5485328259158242738}
   - component: {fileID: 7891499411615054199}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Magazine_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 445776951799959346}
   - component: {fileID: 1422166751833972323}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -363,7 +363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4598809541474418502}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -394,7 +394,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 726040510508015836}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: reload
   m_TagString: Untagged
   m_Icon: {fileID: 0}
